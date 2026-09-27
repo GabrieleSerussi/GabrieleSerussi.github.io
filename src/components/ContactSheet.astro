@@ -1,0 +1,28 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import { stripFrames } from '../lib/media';
+
+interface Props {
+  strip: CollectionEntry<'strip'>['data'];
+  paperId?: string;
+}
+
+// A contact sheet of frames from one example. The frames the model actually needs light up
+// once on load; with reduced motion the sheet simply renders in its final state.
+const { strip, paperId } = Astro.props;
+const images = stripFrames();
+const count = images.length > 0 ? images.length : strip.frames;
+const order = [...strip.needed].sort((a, b) => a - b);
+const cells = Array.from({ length: count }, (_, i) => ({ image: images[i], k: order.indexOf(i + 1) }));
+---
+<figure class="sheet" style={`--count: ${count}`}>
+  <div class="sheet-frames" aria-hidden="true">
+    {cells.map((cell) => (
+      <span class:list={['frame', { 'is-needed': cell.k >= 0 }]} style={cell.k >= 0 ? `--k: ${cell.k}` : undefined}>
+        {cell.image && <Image src={cell.image} alt="" width={160} />}
+      </span>
+    ))}
+  </div>
+  <figcaption>{paperId ? <a href={`#paper-${paperId}`}>{strip.caption}</a> : strip.caption}</figcaption>
+</figure>

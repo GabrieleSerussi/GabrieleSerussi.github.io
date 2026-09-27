@@ -1,0 +1,15 @@
+{
+  "name": "gabrieleserussi-site",
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "release": "SITE_STAGE=production astro build",
+    "check:media": "node scripts/check-media.mjs"
+  }
+}

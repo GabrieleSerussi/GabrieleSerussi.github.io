@@ -1,0 +1,54 @@
+---
+import { Image } from 'astro:assets';
+import { findTeaser } from '../lib/media';
+
+interface Props {
+  id: string;
+  title: string;
+}
+
+const { id, title } = Astro.props;
+const teaser = findTeaser(id);
+---
+{teaser.kind === 'video' && (
+  <video
+    class="teaser"
+    data-teaser
+    muted
+    loop
+    playsinline
+    preload="none"
+    poster={teaser.poster}
+    width="640"
+    height="360"
+    aria-label={`Short silent clip from ${title}`}
+  >
+    {teaser.sources.map((s) => (
+      <source src={s.src} type={s.type} />
+    ))}
+  </video>
+)}
+{teaser.kind === 'image' && (
+  <Image class="teaser" src={teaser.image} alt={`Figure from ${title}`} widths={[320, 640]} sizes="(min-width: 40rem) 12.5rem, 100vw" />
+)}
+{teaser.kind === 'none' && <div class="teaser teaser--missing" aria-hidden="true"></div>}
+
+<script>
+  // Play teasers only while they are on screen, and never for reduced motion or data saving.
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const saveData = Boolean((navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData);
+  const videos = document.querySelectorAll<HTMLVideoElement>('video[data-teaser]');
+  if (!reduceMotion && !saveData && 'IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          const video = entry.target as HTMLVideoElement;
+          if (entry.isIntersecting) video.play().catch(() => {});
+          else video.pause();
+        }
+      },
+      { rootMargin: '200px 0px', threshold: 0.25 },
+    );
+    videos.forEach((video) => observer.observe(video));
+  }
+</script>

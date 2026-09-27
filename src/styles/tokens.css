@@ -1,0 +1,54 @@
+/*
+  Contact-sheet design tokens.
+  Amber marks "the part that matters" (lit frames, link underlines) and nothing else.
+  It is too light for text on white, so it never carries text or focus on its own.
+*/
+:root {
+  --frame-white: #f3f5f7;
+  --graphite: #1e242c;
+  --slate: #5e6873; /* 5.2:1 on frame white */
+  --rule: #d6dce2;
+  --keyframe-amber: #f0a500;
+  --darkroom: #14171b;
+
+  --bg: var(--frame-white);
+  --text: var(--graphite);
+  --muted: var(--slate);
+  --line: var(--rule);
+  --accent: var(--keyframe-amber);
+  --accent-wash: color-mix(in srgb, var(--keyframe-amber) 26%, transparent);
+
+  --font: 'Mona Sans Variable', 'Mona Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  /* Mona Sans width axis carries the hierarchy: wide for identity, normal for reading,
+     condensed for metadata. It doubles as the site's compression idea. */
+  --wide: 'wdth' 125;
+  --normal: 'wdth' 100;
+  --condensed: 'wdth' 87.5;
+
+  /* Type scale from the classic sequence: 14 / 17 (18) / 21 / 36 / 48 px */
+  --step--1: 0.875rem;
+  --step-0: 1.0625rem;
+  --step-0-wide: 1.125rem;
+  --step-1: 1.3125rem;
+  --step-2: 2.25rem;
+  --step-3: 3rem;
+
+  --measure: 68ch;
+  --page: 47rem;
+  --space-m: 1.5rem;
+  --space-l: 3rem;
+  --radius-frame: 2px;
+
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: var(--darkroom);
+    --text: #e7eaee;
+    --muted: #9aa4af; /* 7.1:1 on darkroom */
+    --line: #2a3038;
+    --accent-wash: color-mix(in srgb, var(--keyframe-amber) 30%, transparent);
+  }
+}

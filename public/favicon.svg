@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <style>
+    .sheet { fill: #1e242c; }
+    .frame { fill: #5e6873; }
+    .needed { fill: #f0a500; }
+    @media (prefers-color-scheme: dark) {
+      .sheet { fill: #e7eaee; }
+      .frame { fill: #9aa4af; }
+    }
+  </style>
+  <rect class="sheet" width="32" height="32" rx="7"/>
+  <rect class="frame" x="5" y="10" width="6" height="12" rx="1.5"/>
+  <rect class="needed" x="13" y="10" width="6" height="12" rx="1.5"/>
+  <rect class="frame" x="21" y="10" width="6" height="12" rx="1.5"/>
+</svg>

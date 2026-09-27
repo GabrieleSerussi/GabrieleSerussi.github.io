@@ -1,0 +1,87 @@
+# papers.yaml: the single source of truth for the homepage, the publications page and llms.txt.
+# Replace this file with your corrected version (delete any "teaser:" lines; teasers are found
+# by file name). Order matters: selected papers appear on the homepage in this order.
+# Rules: a venue goes in only once it's publicly announced. "*" marks equal contribution.
+# Staging builds list every remaining TODO; production builds refuse to run until they're gone.
+
+- id: herbench
+  title: "HERBench: A Benchmark for Multi-Evidence Integration in Video Question Answering"
+  authors: ["Dan Ben-Ami*", "Gabriele Serussi*", "Kobi Cohen", "Chaim Baskin"]
+  venue: "CVPR 2026"
+  type: conference
+  role: "co-first author"
+  theme: "video understanding"
+  selected: true
+  tldr: "Video QA where every question needs at least three separated pieces of evidence; 13 Video-LLMs score 31–42% (random: 20%)."
+  links:
+    paper: "https://openaccess.thecvf.com/content/CVPR2026/papers/Ami_HERBench_A_Benchmark_for_Multi-Evidence_Integration_in_Video_Question_Answering_CVPR_2026_paper.pdf"
+    arxiv: "https://arxiv.org/abs/2512.14870"
+    project: "https://gabrieleserussi.github.io/HERBench/"
+    code: "https://github.com/DanBenAmi/HERBench"
+    dataset: "https://huggingface.co/datasets/DanBenAmi/HERBench"
+
+- id: himu
+  title: "HiMu: Hierarchical Multimodal Frame Selection for Long Video Question Answering"
+  authors: ["Dan Ben-Ami", "Gabriele Serussi", "Kobi Cohen", "Chaim Baskin"]
+  venue: "arXiv 2026"
+  type: preprint
+  role: "second author"
+  theme: "efficient video understanding"
+  selected: true
+  tldr: "Training-free frame selector that matches uniform sampling with a quarter of the frames."
+  links:
+    arxiv: "https://arxiv.org/abs/2603.18558"
+    project: "TODO"
+    code: "TODO"
+
+- id: pregen
+  title: "PREGEN: Uncovering Latent Thoughts in Composed Video Retrieval"
+  authors: ["Gabriele Serussi", "David Vainshtein", "Jonathan Kouchly", "Dotan Di Castro", "Chaim Baskin"]
+  note: "TODO: confirm the full author list and order against arXiv"
+  venue: "arXiv 2026"
+  type: preprint
+  role: "first author"
+  theme: "efficient video understanding"
+  selected: true
+  tldr: "Composed video retrieval with a frozen VLM plus a lightweight encoder, with no VLM fine-tuning."
+  links:
+    arxiv: "https://arxiv.org/abs/2601.13797"
+    code: "TODO"
+
+- id: vedje
+  title: "VEDJE: Video-Efficient Discriminative Joint Encoder for Scalable Video-Text Retrieval"
+  authors: ["Shahaf Wagner", "Gabriele Serussi", "Dan Ben Ami", "Tomer Galanti", "Chaim Baskin"]
+  venue: "ICML 2026 Workshop (AdaptFM)"
+  type: workshop
+  role: "second author"
+  theme: "efficient video understanding"
+  selected: false
+  tldr: "TODO: one sentence with the key number"
+  links:
+    openreview: "TODO"
+
+- id: sdb
+  title: "Structured Diffusion Bridges: Inductive Bias for Denoising Diffusion Bridges"
+  authors: ["TODO"]
+  venue: "arXiv 2026"
+  type: preprint
+  role: "second author"
+  theme: "generative models"
+  selected: false
+  links:
+    arxiv: "https://arxiv.org/abs/2605.02973"
+
+- id: ears
+  title: "Active Propulsion Noise Shaping for Multi-Rotor Aircraft Localization"
+  authors: ["Gabriele Serussi*", "Tamir Shor*", "Tom Hirshberg", "Chaim Baskin", "Alex M. Bronstein"]
+  venue: "IROS 2024"
+  also_presented: "ICML 2024 Workshop (AI4Science)"
+  type: conference
+  role: "co-first author"
+  theme: "earlier work: robotics and acoustics"
+  selected: true
+  tldr: "Shaping a drone's own rotor noise, learned jointly with a neural localizer, for accurate acoustic self-localization."
+  links:
+    paper: "https://doi.org/10.1109/IROS58592.2024.10802115"
+    arxiv: "https://arxiv.org/abs/2402.17289"
+    code: "https://github.com/tamirshor7/EARS_code"

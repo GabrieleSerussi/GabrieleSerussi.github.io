@@ -1,0 +1,15 @@
+# Dated news. Anything older than 180 days drops off the homepage by itself.
+# Only list things that are already public. [label](url) makes a link.
+# Replace each "TODO confirm the date" once you've checked the date.
+
+- id: icml-2026-vedje
+  date: 2026-07-18
+  text: VEDJE was presented at the ICML 2026 AdaptFM workshop. TODO confirm the date.
+
+- id: cvpr-2026-herbench
+  date: 2026-06-05
+  text: Presented [HERBench](#paper-herbench) at CVPR 2026 in Denver. TODO confirm the date.
+
+- id: sdb-arxiv
+  date: 2026-05-05
+  text: Structured Diffusion Bridges is out on [arXiv](https://arxiv.org/abs/2605.02973). TODO confirm the date.

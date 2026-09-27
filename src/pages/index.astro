@@ -1,0 +1,64 @@
+---
+import { getCollection, getEntry } from 'astro:content';
+import { getImage } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import ContactSheet from '../components/ContactSheet.astro';
+import NewsList from '../components/NewsList.astro';
+import PaperRow from '../components/PaperRow.astro';
+import Footer from '../components/Footer.astro';
+import StagingPanel from '../components/StagingPanel.astro';
+import { IS_PRODUCTION, inlineMd } from '../lib/site';
+import { collectIssues, enforce } from '../lib/validate';
+import { personJsonLd } from '../lib/seo';
+import { headshot } from '../lib/media';
+import { hasEqualContribution } from '../lib/papers';
+
+const profileEntry = await getEntry('profile', 'me');
+if (!profileEntry) throw new Error('src/data/profile.yaml must start with a "me:" entry.');
+const profile = profileEntry.data;
+const papers = await getCollection('papers');
+const news = await getCollection('news');
+const strip = (await getEntry('strip', 'hero'))?.data;
+
+// Staging lists these on the page; production refuses to build until they are fixed.
+const issues = collectIssues({ profile, papers, news, strip });
+enforce(issues);
+
+const selected = papers.filter((p) => p.data.selected);
+const stripPaper = strip ? papers.find((p) => p.id === strip.paper) : undefined;
+const site = Astro.site ?? new URL(Astro.url.origin);
+const photo = headshot();
+const photoUrl = photo ? new URL((await getImage({ src: photo, width: 600 })).src, site).href : undefined;
+const jsonLd = personJsonLd(profile, site, photoUrl);
+---
+<Base title={profile.site_title} description={profile.description} jsonLd={jsonLd} goatcounter={profile.goatcounter}>
+  <div class="page">
+    {!IS_PRODUCTION && <StagingPanel issues={issues} />}
+    <Hero profile={profile} />
+    {strip && <ContactSheet strip={strip} paperId={stripPaper?.id} />}
+    <main id="main">
+      <section class="block" aria-labelledby="about">
+        <h2 id="about">About</h2>
+        <div class="prose">
+          {profile.about.map((paragraph) => (
+            <p set:html={inlineMd(paragraph)}></p>
+          ))}
+          {profile.open_to && <p set:html={inlineMd(profile.open_to)}></p>}
+        </div>
+      </section>
+      <NewsList items={news} />
+      <section class="block" aria-labelledby="research">
+        <h2 id="research">Selected research</h2>
+        <ul class="papers">
+          {selected.map((paper) => (
+            <li><PaperRow paper={paper} me={profile.name} teaser /></li>
+          ))}
+        </ul>
+        {hasEqualContribution(selected) && <p class="footnote">* Equal contribution.</p>}
+        <p class="all-pubs"><a href="/publications/">All publications</a></p>
+      </section>
+    </main>
+    <Footer profile={profile} />
+  </div>
+</Base>

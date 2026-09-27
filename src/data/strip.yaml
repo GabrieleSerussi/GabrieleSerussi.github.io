@@ -1,0 +1,7 @@
+# The contact-sheet strip under your name. Frames come from src/assets/strip/ in file-name
+# order (01.jpg, 02.jpg, and so on). "needed" lists the frames that light up, counting from 1.
+hero:
+  paper: herbench
+  frames: 12
+  needed: [2, 5, 8, 11]
+  caption: This HERBench question can only be answered from these four moments, spread across the video.

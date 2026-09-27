@@ -1,0 +1,26 @@
+---
+import type { Issue } from '../lib/validate';
+
+interface Props {
+  issues: Issue[];
+}
+
+const { issues } = Astro.props;
+const summary =
+  issues.length === 0
+    ? 'Nothing left to resolve before launch.'
+    : `${issues.length} ${issues.length === 1 ? 'item needs' : 'items need'} attention before launch.`;
+---
+<aside class="staging" aria-label="Staging notes">
+  <p><strong>Staging preview.</strong>{' '}Search engines are told not to index this build.{' '}{summary}</p>
+  {issues.length > 0 && (
+    <details>
+      <summary>Show the list</summary>
+      <ul>
+        {issues.map((issue) => (
+          <li><code>{issue.where}</code>{': '}{issue.message}</li>
+        ))}
+      </ul>
+    </details>
+  )}
+</aside>

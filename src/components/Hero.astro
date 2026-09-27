@@ -1,0 +1,60 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import { clean, hasPublicFile } from '../lib/site';
+import { headshot } from '../lib/media';
+
+interface Props {
+  profile: CollectionEntry<'profile'>['data'];
+}
+
+const { profile } = Astro.props;
+const photo = headshot();
+const email = clean(profile.email);
+const cv = profile.cv && hasPublicFile(profile.cv) ? profile.cv : undefined;
+const initials = profile.name
+  .split(/\s+/)
+  .map((part) => part.charAt(0))
+  .join('');
+
+const candidates: { label: string; href: string | undefined }[] = [
+  { label: 'Email', href: email ? `mailto:${email}` : undefined },
+  { label: 'Scholar', href: clean(profile.links.scholar) },
+  { label: 'GitHub', href: clean(profile.links.github) },
+  { label: 'X', href: clean(profile.links.x) },
+  { label: 'LinkedIn', href: clean(profile.links.linkedin) },
+  { label: 'CV', href: cv },
+];
+const links = candidates.filter((l): l is { label: string; href: string } => Boolean(l.href));
+---
+<header class="hero">
+  <div class="hero-text">
+    <h1 class="name">{profile.name}</h1>
+    <p class="tagline">{profile.tagline}</p>
+    {profile.tagline_detail && <p class="tagline-detail">{profile.tagline_detail}</p>}
+    <ul class="affiliations">
+      {profile.affiliations.map((a) => (
+        <li>{a.role}{', '}{clean(a.url) ? <a href={a.url}>{a.org}</a> : a.org}</li>
+      ))}
+    </ul>
+    {links.length > 0 && (
+      <ul class="links" aria-label="Contact and profiles">
+        {links.map((l) => (
+          <li><a href={l.href}>{l.label}</a></li>
+        ))}
+      </ul>
+    )}
+  </div>
+  {photo ? (
+    <Image
+      class="headshot"
+      src={photo}
+      alt={`Portrait of ${profile.name}`}
+      widths={[180, 360]}
+      sizes="(min-width: 48rem) 9rem, 5.25rem"
+      loading="eager"
+    />
+  ) : (
+    <div class="headshot headshot--placeholder" aria-hidden="true">{initials}</div>
+  )}
+</header>

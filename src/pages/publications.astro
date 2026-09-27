@@ -1,0 +1,38 @@
+---
+import { getCollection, getEntry } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import PaperRow from '../components/PaperRow.astro';
+import Footer from '../components/Footer.astro';
+import { hasEqualContribution, paperYear } from '../lib/papers';
+
+const profileEntry = await getEntry('profile', 'me');
+if (!profileEntry) throw new Error('src/data/profile.yaml must start with a "me:" entry.');
+const profile = profileEntry.data;
+const papers = await getCollection('papers');
+const years = [...new Set(papers.map((p) => paperYear(p.data)))].sort((a, b) => b - a);
+const groups = years.map((year) => ({ year, items: papers.filter((p) => paperYear(p.data) === year) }));
+---
+<Base
+  title={`Publications | ${profile.name}`}
+  description={`Papers and preprints by ${profile.name}, with links to code, data and BibTeX.`}
+  goatcounter={profile.goatcounter}
+>
+  <div class="page">
+    <header class="subhead"><a class="home-link" href="/">{profile.name}</a></header>
+    <main id="main">
+      <h1 class="page-title">Publications</h1>
+      {groups.map((group) => (
+        <section class="block" aria-labelledby={`year-${group.year}`}>
+          <h2 id={`year-${group.year}`}>{group.year > 0 ? group.year : 'Other'}</h2>
+          <ul class="papers papers--compact">
+            {group.items.map((paper) => (
+              <li><PaperRow paper={paper} me={profile.name} /></li>
+            ))}
+          </ul>
+        </section>
+      ))}
+      {hasEqualContribution(papers) && <p class="footnote">* Equal contribution.</p>}
+    </main>
+    <Footer profile={profile} />
+  </div>
+</Base>

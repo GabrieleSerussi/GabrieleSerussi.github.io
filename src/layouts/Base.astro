@@ -1,0 +1,36 @@
+---
+import '@fontsource-variable/mona-sans/full.css';
+import '../styles/tokens.css';
+import '../styles/global.css';
+import Seo from '../components/Seo.astro';
+import { IS_PRODUCTION } from '../lib/site';
+
+interface Props {
+  title: string;
+  description: string;
+  jsonLd?: Record<string, unknown>;
+  goatcounter?: string;
+  noindex?: boolean;
+}
+
+const { title, description, jsonLd, goatcounter, noindex = false } = Astro.props;
+// Analytics only count real visitors: production builds with a GoatCounter code.
+const counter = IS_PRODUCTION && goatcounter ? `https://${goatcounter}.goatcounter.com/count` : undefined;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <Seo title={title} description={description} jsonLd={jsonLd} noindex={noindex || !IS_PRODUCTION} />
+    <meta name="theme-color" content="#f3f5f7" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#14171b" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    {counter && <script is:inline data-goatcounter={counter} async src="//gc.zgo.at/count.js"></script>}
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <slot />
+  </body>
+</html>

@@ -1,0 +1,57 @@
+# Everything about you that appears on the site. The build checks it on every run.
+me:
+  name: Gabriele Serussi
+  site_title: Gabriele Serussi
+  tagline: I build video models that spend only the compute they need.
+  tagline_detail: Real-time generation, long-context memory, and efficient video understanding.
+  # Search results and link previews show this. Keep it under 160 characters.
+  description: >-
+    Gabriele Serussi is a PhD researcher at Ben-Gurion University's INSIGHT Lab
+    and an AI Researcher at Decart, working on efficient, real-time video models.
+  affiliations:
+    - role: PhD researcher
+      org: INSIGHT Lab, Ben-Gurion University
+      org_formal: Ben-Gurion University of the Negev
+      url: https://insight.interia.website/   # check this is the lab's current address
+      kind: university
+    - role: AI Researcher   # swap in the Decart-approved title
+      org: Decart
+      url: https://decart.ai
+      kind: company
+  alumni_of: Technion – Israel Institute of Technology
+  # Paragraphs for the About section. [label](url) makes a link; #paper-<id> jumps to a paper below.
+  about:
+    - >-
+      I'm a PhD researcher at the [INSIGHT Lab](https://insight.interia.website/) at
+      Ben-Gurion University, advised by Prof. Chaim Baskin, and an AI Researcher at
+      [Decart](https://decart.ai), where I work on real-time video generation.
+    - >-
+      My work asks how little a video model can spend and still get the answer right.
+      Recent examples are [HERBench](#paper-herbench) (CVPR 2026), a benchmark showing that
+      Video-LLMs break down when an answer needs evidence from across a video;
+      [HiMu](#paper-himu), a training-free frame selector that matches uniform sampling with
+      a quarter of the frames; and [PREGEN](#paper-pregen), composed video retrieval without
+      fine-tuning the VLM.
+    - >-
+      Before that, I did my MSc at the Technion on acoustic localization for drones
+      ([IROS 2024](#paper-ears)).
+  open_to: I'm always happy to talk about efficient video models, world models and research collaborations.
+  email: TODO   # hello@gabrieleserussi.com once Cloudflare Email Routing is on
+  cv: /cv.pdf   # put the PDF at public/cv.pdf
+  links:
+    scholar: https://scholar.google.com/citations?user=GJ19YUEAAAAJ
+    github: https://github.com/GabrieleSerussi
+    x: https://x.com/GSerussi
+    linkedin: https://www.linkedin.com/in/gabriele-serussi
+    orcid: https://orcid.org/0009-0001-4280-4918
+    openreview: https://openreview.net/profile?id=~Gabriele_Serussi1
+    alphaxiv: https://www.alphaxiv.org/@gabriele-serussi
+    dblp: TODO               # your persistent DBLP URL
+    semantic_scholar: TODO   # your Semantic Scholar author page
+    huggingface: TODO        # your Hugging Face profile
+  knows_about:
+    - video generation
+    - efficient deep learning
+    - video understanding
+    - multimodal learning
+  goatcounter: ""   # your GoatCounter code, e.g. "gabrieleserussi". Analytics stay off until set.
