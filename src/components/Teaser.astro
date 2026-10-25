@@ -5,9 +5,11 @@ import { findTeaser } from '../lib/media';
 interface Props {
   id: string;
   title: string;
+  alt?: string;
+  sizes?: string;
 }
 
-const { id, title } = Astro.props;
+const { id, title, alt, sizes = '100vw' } = Astro.props;
 const teaser = findTeaser(id);
 ---
 {teaser.kind === 'video' && (
@@ -19,9 +21,9 @@ const teaser = findTeaser(id);
     playsinline
     preload="none"
     poster={teaser.poster}
-    width="640"
-    height="360"
-    aria-label={`Short silent clip from ${title}`}
+    width="960"
+    height="540"
+    aria-label={alt ?? `Short silent clip from ${title}`}
   >
     {teaser.sources.map((s) => (
       <source src={s.src} type={s.type} />
@@ -29,7 +31,7 @@ const teaser = findTeaser(id);
   </video>
 )}
 {teaser.kind === 'image' && (
-  <Image class="teaser" src={teaser.image} alt={`Figure from ${title}`} widths={[320, 640]} sizes="(min-width: 40rem) 12.5rem, 100vw" />
+  <Image class="teaser" src={teaser.image} alt={alt ?? `Figure from ${title}`} widths={[480, 800, 1280]} sizes={sizes} />
 )}
 {teaser.kind === 'none' && <div class="teaser teaser--missing" aria-hidden="true"></div>}
 

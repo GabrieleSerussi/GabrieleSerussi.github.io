@@ -1,38 +1,41 @@
 ---
-import { getCollection, getEntry } from 'astro:content';
+import { getEntry } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import PaperRow from '../components/PaperRow.astro';
 import Footer from '../components/Footer.astro';
-import { hasEqualContribution, paperYear } from '../lib/papers';
+import { clean, xHandle } from '../lib/site';
+import { getPapers, hasEqualContribution, paperYear } from '../lib/papers';
 
 const profileEntry = await getEntry('profile', 'me');
 if (!profileEntry) throw new Error('src/data/profile.yaml must start with a "me:" entry.');
 const profile = profileEntry.data;
-const papers = await getCollection('papers');
+const papers = await getPapers();
 const years = [...new Set(papers.map((p) => paperYear(p.data)))].sort((a, b) => b - a);
 const groups = years.map((year) => ({ year, items: papers.filter((p) => paperYear(p.data) === year) }));
+const me = Object.values(profile.links).filter((v): v is string => Boolean(clean(v)));
 ---
 <Base
   title={`Publications | ${profile.name}`}
-  description={`Papers and preprints by ${profile.name}, with links to code, data and BibTeX.`}
+  description={`Papers and preprints by ${profile.name} on world models, video understanding, generative modeling and robotics, with links to code, data and BibTeX.`}
+  name={profile.name}
   goatcounter={profile.goatcounter}
+  me={me}
+  twitter={xHandle(profile.links.x)}
+  current="publications"
 >
-  <div class="page">
-    <header class="subhead"><a class="home-link" href="/">{profile.name}</a></header>
-    <main id="main">
-      <h1 class="page-title">Publications</h1>
-      {groups.map((group) => (
-        <section class="block" aria-labelledby={`year-${group.year}`}>
-          <h2 id={`year-${group.year}`}>{group.year > 0 ? group.year : 'Other'}</h2>
-          <ul class="papers papers--compact">
-            {group.items.map((paper) => (
-              <li><PaperRow paper={paper} me={profile.name} /></li>
-            ))}
-          </ul>
-        </section>
-      ))}
-      {hasEqualContribution(papers) && <p class="footnote">* Equal contribution.</p>}
-    </main>
-    <Footer profile={profile} />
-  </div>
+  <main id="main">
+    <h1 class="page-title">Publications</h1>
+    {groups.map((group) => (
+      <section class="year-group" aria-labelledby={`year-${group.year}`}>
+        <h2 class="year-title" id={`year-${group.year}`}>{group.year > 0 ? group.year : 'Other'}</h2>
+        <ul class="pubs">
+          {group.items.map((paper) => (
+            <li><PaperRow paper={paper} me={profile.name} /></li>
+          ))}
+        </ul>
+      </section>
+    ))}
+    {hasEqualContribution(papers) && <p class="footnote">* Equal contribution.</p>}
+  </main>
+  <Footer profile={profile} />
 </Base>

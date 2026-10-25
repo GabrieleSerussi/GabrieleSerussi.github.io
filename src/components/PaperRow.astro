@@ -1,39 +1,66 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import Teaser from './Teaser.astro';
-import { clean } from '../lib/site';
-import { formatAuthors, paperLinks, primaryLink, venueLine } from '../lib/papers';
+import { clean, track } from '../lib/site';
+import { findTeaser } from '../lib/media';
+import { badges, formatAuthors, paperLinks, primaryLink } from '../lib/papers';
 
 interface Props {
   paper: CollectionEntry<'papers'>;
   me: string;
-  teaser?: boolean;
+  /** Brief rows have no teaser; the badges take its place. */
+  brief?: boolean;
+  /** The one-sentence result. Brief rows on the homepage leave it out. */
+  showTldr?: boolean;
 }
 
-const { paper, me, teaser = false } = Astro.props;
+const { paper, me, showTldr = true } = Astro.props;
 const d = paper.data;
+const brief = Astro.props.brief ?? findTeaser(paper.id).kind === 'none';
 const titleHref = primaryLink(d.links);
 const links = paperLinks(d.links);
 const tldr = clean(d.tldr);
 const bibtex = clean(d.bibtex);
+const also = clean(d.also_presented);
+const list = badges(d);
 ---
-<article class:list={['paper', { 'paper--teaser': teaser }]} id={`paper-${paper.id}`}>
-  {teaser && <Teaser id={paper.id} title={d.title} />}
-  <div class="paper-body">
-    <h3 class="paper-title">{titleHref ? <a href={titleHref}>{d.title}</a> : d.title}</h3>
-    <p class="paper-meta" set:html={formatAuthors(d.authors, me)}></p>
-    <p class="paper-meta">{venueLine(d)}</p>
-    {tldr && <p class="paper-tldr">{tldr}</p>}
+<article class:list={['pub', { 'pub--brief': brief }]} id={`paper-${paper.id}`}>
+  {brief ? (
+    <div class="pub-side">
+      <div class="badges">
+        {list.map((b) => (
+          <span class:list={['badge', { 'badge--accent': b.tone === 'accent', 'badge--quiet': b.tone === 'quiet' }]}>{b.label}</span>
+        ))}
+      </div>
+    </div>
+  ) : (
+    <div class="media">
+      <Teaser id={paper.id} title={d.title} alt={clean(d.teaser_alt)} sizes="(min-width: 48rem) 13.5rem, 100vw" />
+    </div>
+  )}
+  <div>
+    <h3 class="pub-title">{titleHref ? <a href={titleHref} data-goatcounter-click={track('paper', paper.id, 'title')}>{d.title}</a> : d.title}</h3>
+    <p class="pub-authors" set:html={formatAuthors(d.authors, me)}></p>
+    {!brief && (
+      <div class="badges">
+        {list.map((b) => (
+          <span class:list={['badge', { 'badge--accent': b.tone === 'accent', 'badge--quiet': b.tone === 'quiet' }]}>{b.label}</span>
+        ))}
+      </div>
+    )}
+    {also && <p class="pub-also">Also presented at {also}.</p>}
+    {tldr && showTldr && <p class="pub-tldr">{tldr}</p>}
+    {!showTldr && clean(d.hook) && <p class="pub-tldr">{d.hook}</p>}
     {links.length > 0 && (
-      <ul class="paper-links">
+      <ul class="pub-links">
         {links.map((l) => (
-          <li><a href={l.href} aria-label={`${l.label}: ${d.title}`}>{l.label}</a></li>
+          <li><a href={l.href} aria-label={`${l.label}: ${d.title}`} data-goatcounter-click={track('paper', paper.id, l.label)}>{l.label}</a></li>
         ))}
       </ul>
     )}
     {bibtex && (
       <details class="bibtex">
-        <summary>BibTeX</summary>
+        <summary data-goatcounter-click={track('paper', paper.id, 'bibtex')}>BibTeX</summary>
         <pre><code>{bibtex}</code></pre>
       </details>
     )}

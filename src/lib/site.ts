@@ -46,6 +46,9 @@ export const escapeHtml = (text: string): string => text.replace(/[&<>"']/g, (c)
 
 const MD_LINK = /\[([^\]]+)\]\(([^)\s]+)\)/g;
 
+/** True when the text contains at least one [label](url) link. */
+export const hasMdLink = (text: string): boolean => new RegExp(MD_LINK.source).test(text);
+
 /** Escapes text and turns [label](url) into links. Nothing else is interpreted. */
 export const inlineMd = (text: string): string =>
   escapeHtml(text).replace(MD_LINK, (_match, label: string, href: string) => `<a href="${href}">${label}</a>`);
@@ -53,6 +56,12 @@ export const inlineMd = (text: string): string =>
 /** Plain-text version of inlineMd, used for llms.txt: "label (absolute url)". */
 export const stripMd = (text: string, base: string): string =>
   text.replace(MD_LINK, (_match, label: string, href: string) => `${label} (${new URL(href, base).href})`);
+
+/** "@GSerussi" from an x.com or twitter.com profile URL. */
+export const xHandle = (url: string | undefined): string | undefined => {
+  const handle = clean(url)?.match(/(?:x|twitter)\.com\/([A-Za-z0-9_]+)/)?.[1];
+  return handle ? `@${handle}` : undefined;
+};
 
 /** Display names for profile links, in the order the footer shows them. */
 export const PROFILE_LINKS: Record<string, string> = {
@@ -67,3 +76,14 @@ export const PROFILE_LINKS: Record<string, string> = {
   huggingface: 'Hugging Face',
   alphaxiv: 'alphaXiv',
 };
+
+/**
+ * Event name for GoatCounter click tracking, e.g. track('paper', 'herbench', 'arXiv') gives
+ * "paper-herbench-arxiv". count.js counts clicks on any element with data-goatcounter-click.
+ */
+export const track = (...parts: string[]): string =>
+  parts
+    .join('-')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');

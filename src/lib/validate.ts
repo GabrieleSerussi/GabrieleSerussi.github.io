@@ -1,6 +1,6 @@
 import type { CollectionEntry } from 'astro:content';
 import { IS_PRODUCTION, findTodos, hasPublicFile } from './site';
-import { findTeaser, headshot, stripFrames } from './media';
+import { findLogo, findMark, findTeaser, headshot } from './media';
 import { isAuthor } from './papers';
 
 export type Issue = { where: string; message: string };
@@ -9,11 +9,10 @@ type Input = {
   profile: CollectionEntry<'profile'>['data'];
   papers: CollectionEntry<'papers'>[];
   news: CollectionEntry<'news'>[];
-  strip?: CollectionEntry<'strip'>['data'];
 };
 
 /** Everything that must be true before launch. Staging lists these; production refuses to build. */
-export function collectIssues({ profile, papers, news, strip }: Input): Issue[] {
+export function collectIssues({ profile, papers, news }: Input): Issue[] {
   const issues: Issue[] = [];
   const add = (where: string, message: string): void => {
     issues.push({ where, message });
@@ -25,8 +24,22 @@ export function collectIssues({ profile, papers, news, strip }: Input): Issue[] 
   };
 
   todos('profile.yaml', profile);
-  if (!headshot()) add('src/assets', 'add your headshot as headshot.jpg');
+  if (!headshot()) add('src/assets', 'add your headshot as headshot.jpg, a square photo');
   if (profile.cv && !hasPublicFile(profile.cv)) add('public', `add your CV at public${profile.cv}`);
+  for (const a of profile.affiliations) {
+    for (const logo of a.logos) {
+      if (!findLogo(logo).light) add('src/assets/logos', `add ${logo}.png for ${a.org}`);
+    }
+  }
+  for (const t of profile.timeline) {
+    if (t.logo && !findMark(t.logo)) add('src/assets/logos', `add ${t.logo}-mark.png for ${t.org}`);
+  }
+  const ids = new Set(papers.map((p) => p.id));
+  for (const pillar of profile.research.pillars) {
+    for (const id of pillar.papers) {
+      if (!ids.has(id)) add('profile.yaml', `research pillar "${pillar.title}" lists "${id}", which isn't in papers.yaml`);
+    }
+  }
 
   for (const paper of papers) {
     const where = `papers.yaml, ${paper.id}`;
@@ -37,23 +50,14 @@ export function collectIssues({ profile, papers, news, strip }: Input): Issue[] 
     }
     if (d.selected) {
       if (!d.tldr) add(where, 'selected papers need a one-sentence tldr');
-      if (findTeaser(paper.id).kind === 'none') {
-        add(where, `selected papers need a teaser in public/media/${paper.id}/ or src/assets/teasers/${paper.id}.png`);
+      if (d.emphasis === 'lead' && !d.hook) add(where, 'lead papers need a one-line hook for their highlight card');
+      if (d.emphasis !== 'brief' && findTeaser(paper.id).kind === 'none') {
+        add(where, `lead and standard papers need a teaser in public/media/${paper.id}/ or src/assets/teasers/${paper.id}.png`);
       }
     }
   }
 
   for (const item of news) todos(`news.yaml, ${item.id}`, item.data);
-
-  if (strip) {
-    todos('strip.yaml', strip);
-    if (!papers.some((p) => p.id === strip.paper)) add('strip.yaml', `paper "${strip.paper}" isn't in papers.yaml`);
-    const outside = strip.needed.filter((n) => n < 1 || n > strip.frames);
-    if (outside.length > 0) add('strip.yaml', `needed frames ${outside.join(', ')} are outside 1 to ${strip.frames}`);
-    const found = stripFrames().length;
-    if (found === 0) add('src/assets/strip', `add ${strip.frames} frame images named 01.jpg, 02.jpg, and so on`);
-    else if (found !== strip.frames) add('src/assets/strip', `found ${found} frame images but strip.yaml says ${strip.frames}`);
-  }
 
   return issues;
 }

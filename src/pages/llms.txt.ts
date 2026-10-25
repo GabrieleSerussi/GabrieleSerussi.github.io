@@ -1,14 +1,17 @@
 import type { APIRoute } from 'astro';
-import { getCollection, getEntry } from 'astro:content';
-import { PROFILE_LINKS, clean, stripMd } from '../lib/site';
-import { primaryLink, venueLine } from '../lib/papers';
+import { getEntry } from 'astro:content';
+import { PROFILE_LINKS, clean } from '../lib/site';
+import { getPapers, primaryLink, venueLine } from '../lib/papers';
+import { profileProse, timelineLines } from '../lib/profileText';
 
-// A plain-text summary for AI assistants and crawlers (llmstxt.org format).
+// A plain-text summary for AI assistants and crawlers (llmstxt.org format). It leads with the
+// facts an assistant needs to answer "who is this and what do they work on", then the proof.
 export const GET: APIRoute = async ({ site }) => {
   const profile = (await getEntry('profile', 'me'))?.data;
   if (!profile) throw new Error('src/data/profile.yaml must start with a "me:" entry.');
-  const base = site?.href ?? 'https://gabrieleserussi.com/';
-  const selected = (await getCollection('papers')).filter((p) => p.data.selected);
+  const base = site?.href ?? 'https://gabrieleserussi.github.io/';
+  const papers = await getPapers();
+  const selected = papers.filter((p) => p.data.selected);
 
   const research = selected.map((p) => {
     const href = primaryLink(p.data.links) ?? new URL(`/#paper-${p.id}`, base).href;
@@ -24,7 +27,17 @@ export const GET: APIRoute = async ({ site }) => {
     '',
     `> ${profile.description}`,
     '',
-    ...profile.about.map((paragraph) => stripMd(paragraph, base)),
+    profile.tagline,
+    '',
+    profileProse(profile, papers, base),
+    '',
+    '## Research interests',
+    '',
+    ...profile.knows_about.map((topic) => `- ${topic}`),
+    '',
+    '## Experience and education',
+    '',
+    ...timelineLines(profile),
     '',
     '## Selected research',
     '',
@@ -34,6 +47,10 @@ export const GET: APIRoute = async ({ site }) => {
     '## Elsewhere',
     '',
     ...elsewhere,
+    '',
+    '## Optional',
+    '',
+    `- [Full profile with every paper and its BibTeX](${new URL('/llms-full.txt', base).href})`,
     '',
   ].join('\n');
 

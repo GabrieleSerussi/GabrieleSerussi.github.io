@@ -4,12 +4,13 @@ import Base from '../layouts/Base.astro';
 
 const name = (await getEntry('profile', 'me'))?.data.name ?? 'Home';
 ---
-<Base title={`Page not found | ${name}`} description="There is no page at this address." noindex>
-  <div class="page">
-    <header class="subhead"><a class="home-link" href="/">{name}</a></header>
-    <main id="main">
-      <h1 class="page-title">There's no page at this address</h1>
-      <p class="prose notfound">It may have moved when the site was rebuilt. The <a href="/">homepage</a> and the <a href="/publications/">publications list</a> have everything.</p>
-    </main>
-  </div>
+<Base title={`Page not found | ${name}`} description="There is no page at this address." name={name} noindex>
+  <main id="main">
+    <h1 class="page-title">There's no page at this address</h1>
+    <p class="notfound">It may have moved when the site was rebuilt. The homepage and the publication list have everything.</p>
+    <ul class="pills" style="margin-top: 1.5rem">
+      <li><a class="pill pill--solid" href="/">Go to the homepage</a></li>
+      <li><a class="pill" href="/publications/">See all publications</a></li>
+    </ul>
+  </main>
 </Base>

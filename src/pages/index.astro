@@ -3,62 +3,73 @@ import { getCollection, getEntry } from 'astro:content';
 import { getImage } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Hero from '../components/Hero.astro';
-import ContactSheet from '../components/ContactSheet.astro';
+import Highlights from '../components/Highlights.astro';
+import Research from '../components/Research.astro';
 import NewsList from '../components/NewsList.astro';
 import PaperRow from '../components/PaperRow.astro';
+import Timeline from '../components/Timeline.astro';
+import Contact from '../components/Contact.astro';
 import Footer from '../components/Footer.astro';
 import StagingPanel from '../components/StagingPanel.astro';
-import { IS_PRODUCTION, inlineMd } from '../lib/site';
+import { IS_PRODUCTION, clean, lastUpdated, xHandle } from '../lib/site';
 import { collectIssues, enforce } from '../lib/validate';
-import { personJsonLd } from '../lib/seo';
+import { profileGraph } from '../lib/seo';
 import { headshot } from '../lib/media';
-import { hasEqualContribution } from '../lib/papers';
+import { getPapers, hasEqualContribution } from '../lib/papers';
 
 const profileEntry = await getEntry('profile', 'me');
 if (!profileEntry) throw new Error('src/data/profile.yaml must start with a "me:" entry.');
 const profile = profileEntry.data;
-const papers = await getCollection('papers');
+const papers = await getPapers();
 const news = await getCollection('news');
-const strip = (await getEntry('strip', 'hero'))?.data;
 
 // Staging lists these on the page; production refuses to build until they are fixed.
-const issues = collectIssues({ profile, papers, news, strip });
+const issues = collectIssues({ profile, papers, news });
 enforce(issues);
 
+// Selected papers in file order: lead papers are highlights; all of them are listed.
 const selected = papers.filter((p) => p.data.selected);
-const stripPaper = strip ? papers.find((p) => p.id === strip.paper) : undefined;
+const highlights = selected.filter((p) => p.data.emphasis === 'lead');
+const onPage = new Set(selected.map((p) => p.id));
+
 const site = Astro.site ?? new URL(Astro.url.origin);
 const photo = headshot();
-const photoUrl = photo ? new URL((await getImage({ src: photo, width: 600 })).src, site).href : undefined;
-const jsonLd = personJsonLd(profile, site, photoUrl);
+const photoUrl = photo ? new URL((await getImage({ src: photo, width: 400 })).src, site).href : undefined;
+const jsonLd = profileGraph(profile, papers, site, photoUrl, lastUpdated());
+const me = Object.values(profile.links).filter((v): v is string => Boolean(clean(v)));
 ---
-<Base title={profile.site_title} description={profile.description} jsonLd={jsonLd} goatcounter={profile.goatcounter}>
-  <div class="page">
-    {!IS_PRODUCTION && <StagingPanel issues={issues} />}
+<Base
+  title={profile.site_title}
+  description={profile.description}
+  name={profile.name}
+  jsonLd={jsonLd}
+  goatcounter={profile.goatcounter}
+  me={me}
+  twitter={xHandle(profile.links.x)}
+  current="home"
+>
+  {!IS_PRODUCTION && <StagingPanel issues={issues} />}
+  <main id="main">
     <Hero profile={profile} />
-    {strip && <ContactSheet strip={strip} paperId={stripPaper?.id} />}
-    <main id="main">
-      <section class="block" aria-labelledby="about">
-        <h2 id="about">About</h2>
-        <div class="prose">
-          {profile.about.map((paragraph) => (
-            <p set:html={inlineMd(paragraph)}></p>
-          ))}
-          {profile.open_to && <p set:html={inlineMd(profile.open_to)}></p>}
-        </div>
-      </section>
-      <NewsList items={news} />
-      <section class="block" aria-labelledby="research">
-        <h2 id="research">Selected research</h2>
-        <ul class="papers">
-          {selected.map((paper) => (
-            <li><PaperRow paper={paper} me={profile.name} teaser /></li>
-          ))}
-        </ul>
-        {hasEqualContribution(selected) && <p class="footnote">* Equal contribution.</p>}
-        <p class="all-pubs"><a href="/publications/">All publications</a></p>
-      </section>
-    </main>
-    <Footer profile={profile} />
-  </div>
+    <Highlights papers={highlights} />
+    <Research research={profile.research} papers={papers} onPage={onPage} />
+    <NewsList items={news} />
+
+    <section class="section" id="publications" aria-labelledby="publications-title">
+      <div class="section-head">
+        <h2 id="publications-title">Selected publications</h2>
+        <a href="/publications/">All publications</a>
+      </div>
+      <ul class="pubs">
+        {selected.map((paper) => (
+          <li><PaperRow paper={paper} me={profile.name} brief={paper.data.emphasis === 'brief'} showTldr={paper.data.emphasis !== 'brief'} /></li>
+        ))}
+      </ul>
+      {hasEqualContribution(selected) && <p class="footnote">* Equal contribution.</p>}
+    </section>
+
+    <Timeline entries={profile.timeline} />
+    <Contact profile={profile} />
+  </main>
+  <Footer profile={profile} />
 </Base>

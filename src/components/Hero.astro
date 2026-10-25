@@ -1,8 +1,8 @@
 ---
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
-import { clean, hasPublicFile } from '../lib/site';
-import { headshot } from '../lib/media';
+import { clean, hasPublicFile, inlineMd, track } from '../lib/site';
+import { findLogo, headshot } from '../lib/media';
 
 interface Props {
   profile: CollectionEntry<'profile'>['data'];
@@ -17,44 +17,62 @@ const initials = profile.name
   .map((part) => part.charAt(0))
   .join('');
 
-const candidates: { label: string; href: string | undefined }[] = [
-  { label: 'Email', href: email ? `mailto:${email}` : undefined },
-  { label: 'Scholar', href: clean(profile.links.scholar) },
+// Email first when there is one: a conversation is the action we want most.
+const pills = [
+  { label: 'Email', href: email ? `mailto:${email}` : undefined, solid: true },
+  { label: 'Google Scholar', href: clean(profile.links.scholar) },
   { label: 'GitHub', href: clean(profile.links.github) },
   { label: 'X', href: clean(profile.links.x) },
   { label: 'LinkedIn', href: clean(profile.links.linkedin) },
   { label: 'CV', href: cv },
-];
-const links = candidates.filter((l): l is { label: string; href: string } => Boolean(l.href));
+].filter((p): p is { label: string; href: string; solid?: boolean } => Boolean(p.href));
+
+// Logos are drawn for a light page; dark mode swaps in the white versions.
+const logos = await Promise.all(
+  profile.affiliations.flatMap((a) =>
+    a.logos.map(async (name) => {
+      const { light, dark } = findLogo(name);
+      if (!light) return undefined;
+      const [l, d] = await Promise.all([getImage({ src: light, height: 56 }), getImage({ src: dark ?? light, height: 56 })]);
+      return { name, org: a.org_formal ?? a.org, url: clean(a.url), light: l, dark: d };
+    }),
+  ),
+);
+const shown = logos.filter((l) => l !== undefined);
 ---
 <header class="hero">
-  <div class="hero-text">
+  {photo ? (
+    <div class="photo">
+      <Image src={photo} alt={`Portrait of ${profile.name}`} widths={[240, 400]} sizes="(min-width: 48rem) 12.5rem, 7.5rem" loading="eager" fetchpriority="high" />
+    </div>
+  ) : (
+    <div class="photo" aria-hidden="true">{initials}</div>
+  )}
+  <div>
     <h1 class="name">{profile.name}</h1>
-    <p class="tagline">{profile.tagline}</p>
-    {profile.tagline_detail && <p class="tagline-detail">{profile.tagline_detail}</p>}
-    <ul class="affiliations">
-      {profile.affiliations.map((a) => (
-        <li>{a.role}{', '}{clean(a.url) ? <a href={a.url}>{a.org}</a> : a.org}</li>
-      ))}
-    </ul>
-    {links.length > 0 && (
-      <ul class="links" aria-label="Contact and profiles">
-        {links.map((l) => (
-          <li><a href={l.href}>{l.label}</a></li>
+    <p class="mission">{profile.tagline}</p>
+    <p class="credentials" set:html={inlineMd(profile.credentials)}></p>
+    {pills.length > 0 && (
+      <ul class="pills" aria-label="Contact and profiles">
+        {pills.map((p) => (
+          <li><a class:list={['pill', { 'pill--solid': p.solid }]} href={p.href} data-goatcounter-click={track('hero', p.label)}>{p.label}</a></li>
+        ))}
+      </ul>
+    )}
+    {profile.open_to && <p class="callout">{profile.open_to}</p>}
+    {shown.length > 0 && (
+      <ul class="logos" aria-label="Affiliations">
+        {shown.map((l) => (
+          <li>
+            <a href={l.url} aria-label={l.org} data-goatcounter-click={track('logo', l.name)}>
+              <picture>
+                <source media="(prefers-color-scheme: dark)" srcset={l.dark.src} />
+                <img src={l.light.src} alt="" data-logo={l.name} width={l.light.attributes.width} height={l.light.attributes.height} />
+              </picture>
+            </a>
+          </li>
         ))}
       </ul>
     )}
   </div>
-  {photo ? (
-    <Image
-      class="headshot"
-      src={photo}
-      alt={`Portrait of ${profile.name}`}
-      widths={[180, 360]}
-      sizes="(min-width: 48rem) 9rem, 5.25rem"
-      loading="eager"
-    />
-  ) : (
-    <div class="headshot headshot--placeholder" aria-hidden="true">{initials}</div>
-  )}
 </header>

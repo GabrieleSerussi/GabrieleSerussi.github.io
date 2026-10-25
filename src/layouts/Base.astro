@@ -1,5 +1,9 @@
 ---
-import '@fontsource-variable/mona-sans/full.css';
+import '@fontsource-variable/newsreader/opsz.css';
+import '@fontsource-variable/newsreader/opsz-italic.css';
+import '@fontsource-variable/mona-sans/wdth.css';
+import displayFont from '@fontsource-variable/newsreader/files/newsreader-latin-opsz-normal.woff2?url';
+import textFont from '@fontsource-variable/mona-sans/files/mona-sans-latin-wdth-normal.woff2?url';
 import '../styles/tokens.css';
 import '../styles/global.css';
 import Seo from '../components/Seo.astro';
@@ -8,29 +12,58 @@ import { IS_PRODUCTION } from '../lib/site';
 interface Props {
   title: string;
   description: string;
+  name: string;
   jsonLd?: Record<string, unknown>;
   goatcounter?: string;
   noindex?: boolean;
+  /** Profile URLs that belong to the same person (rel="me"). */
+  me?: string[];
+  /** X handle for link previews, e.g. "@GSerussi". */
+  twitter?: string;
+  current?: 'home' | 'publications';
 }
 
-const { title, description, jsonLd, goatcounter, noindex = false } = Astro.props;
+const { title, description, name, jsonLd, goatcounter, noindex = false, me = [], twitter, current } = Astro.props;
 // Analytics only count real visitors: production builds with a GoatCounter code.
 const counter = IS_PRODUCTION && goatcounter ? `https://${goatcounter}.goatcounter.com/count` : undefined;
+const nav = [
+  { label: 'Research', href: '/#research' },
+  { label: 'Publications', href: '/#publications', keep: true },
+  { label: 'Experience', href: '/#experience' },
+  { label: 'News', href: '/#news' },
+  { label: 'Contact', href: '/#contact', keep: true },
+];
 ---
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <Seo title={title} description={description} jsonLd={jsonLd} noindex={noindex || !IS_PRODUCTION} />
-    <meta name="theme-color" content="#f3f5f7" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#14171b" media="(prefers-color-scheme: dark)" />
+    <link rel="preload" href={displayFont} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={textFont} as="font" type="font/woff2" crossorigin />
+    <Seo title={title} description={description} jsonLd={jsonLd} noindex={noindex || !IS_PRODUCTION} author={name} twitter={twitter} />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#111111" media="(prefers-color-scheme: dark)" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="alternate" type="text/markdown" href="/llms.txt" title="Summary for AI assistants" />
+    {me.map((href) => <link rel="me" href={href} />)}
     {counter && <script is:inline data-goatcounter={counter} async src="//gc.zgo.at/count.js"></script>}
   </head>
   <body>
+    {counter && <noscript><img src={`${counter}?p=${encodeURIComponent(Astro.url.pathname)}`} alt="" width="1" height="1" style="position:absolute" /></noscript>}
     <a class="skip-link" href="#main">Skip to content</a>
-    <slot />
+    <div class="wrap">
+      <nav class="nav" aria-label="Site">
+        <a class="brand" href="/">{name}</a>
+        <ul>
+          {nav.map((item) => (
+            <li data-keep={item.keep ? '' : undefined}><a href={item.href} aria-current={current === 'publications' && item.label === 'Publications' ? 'page' : undefined}>{item.label}</a></li>
+          ))}
+        </ul>
+      </nav>
+      <slot />
+    </div>
   </body>
 </html>

@@ -5,7 +5,7 @@ type ImageModule = { default: ImageMetadata };
 // Images in src/assets are optimized by Astro at build time. Videos live in public/media.
 const headshotFiles = import.meta.glob<ImageModule>('../assets/headshot.{jpg,jpeg,png,webp,avif}', { eager: true });
 const teaserImages = import.meta.glob<ImageModule>('../assets/teasers/*.{jpg,jpeg,png,webp,avif}', { eager: true });
-const stripFiles = import.meta.glob<ImageModule>('../assets/strip/*.{jpg,jpeg,png,webp,avif}', { eager: true });
+const logoFiles = import.meta.glob<ImageModule>('../assets/logos/*.{png,webp,avif}', { eager: true });
 
 export type Teaser =
   | { kind: 'video'; sources: { src: string; type: string }[]; poster?: string }
@@ -38,8 +38,14 @@ export function findTeaser(id: string): Teaser {
 
 export const headshot = (): ImageMetadata | undefined => Object.values(headshotFiles)[0]?.default;
 
-/** Strip frames in file-name order (01.jpg, 02.jpg, ...). */
-export const stripFrames = (): ImageMetadata[] =>
-  Object.keys(stripFiles)
-    .sort()
-    .map((path) => stripFiles[path].default);
+const logo = (name: string): ImageMetadata | undefined =>
+  Object.entries(logoFiles).find(([path]) => baseName(path) === name)?.[1].default;
+
+/** A wordmark: <name>.png in colour for the light page, <name>-dark.png in white for dark mode. */
+export const findLogo = (name: string): { light?: ImageMetadata; dark?: ImageMetadata } => ({
+  light: logo(name),
+  dark: logo(`${name}-dark`) ?? logo(name),
+});
+
+/** A square mark for the experience timeline: <name>-mark.png. */
+export const findMark = (name: string): ImageMetadata | undefined => logo(`${name}-mark`);

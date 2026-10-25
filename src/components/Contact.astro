@@ -1,0 +1,29 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { clean, track } from '../lib/site';
+
+interface Props {
+  profile: CollectionEntry<'profile'>['data'];
+}
+
+// The closing call to action: what to write about, and the ways to reach me.
+const { profile } = Astro.props;
+const email = clean(profile.email);
+const channels = [
+  { label: 'Email', href: email ? `mailto:${email}` : undefined },
+  { label: 'LinkedIn', href: clean(profile.links.linkedin) },
+  { label: 'X', href: clean(profile.links.x) },
+  { label: 'Google Scholar', href: clean(profile.links.scholar) },
+].filter((c): c is { label: string; href: string } => Boolean(c.href));
+---
+<section class="contact" id="contact" aria-labelledby="contact-title">
+  <h2 id="contact-title">Get in touch</h2>
+  {profile.open_to && <p>{profile.open_to}</p>}
+  {channels.length > 0 && (
+    <ul class="pills">
+      {channels.map((c, i) => (
+        <li><a class:list={['pill', { 'pill--solid': i === 0 }]} href={c.href} data-goatcounter-click={track('contact', c.label)}>{c.label}</a></li>
+      ))}
+    </ul>
+  )}
+</section>

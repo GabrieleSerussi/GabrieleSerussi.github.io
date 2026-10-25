@@ -1,8 +1,22 @@
-import type { CollectionEntry } from 'astro:content';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
+import { getCollection, type CollectionEntry } from 'astro:content';
 import { clean, escapeHtml } from './site';
 
 export type Paper = CollectionEntry<'papers'>;
 export type PaperData = Paper['data'];
+
+// Astro's data store keeps entries sorted by id, so the order of papers.yaml is read back
+// from the file itself. Every entry starts with "- id: <id>".
+const ENTRY_ID = /^-\s+id:\s*["']?([^"'\s#]+)/gm;
+
+/** Every paper, in the order it appears in papers.yaml. */
+export async function getPapers(): Promise<Paper[]> {
+  const text = readFileSync(join(process.cwd(), 'src/data/papers.yaml'), 'utf8');
+  const order = new Map([...text.matchAll(ENTRY_ID)].map((match, i) => [match[1], i]));
+  const rank = (p: Paper): number => order.get(p.id) ?? order.size;
+  return (await getCollection('papers')).sort((a, b) => rank(a) - rank(b));
+}
 
 const LINK_LABELS: Record<string, string> = {
   paper: 'Paper',
@@ -54,11 +68,36 @@ export function primaryLink(links: Record<string, string>): string | undefined {
 // Only ownership roles are worth printing next to the venue.
 const OWNERSHIP: Record<string, string> = { 'first author': 'first author', 'co-first author': 'co-first author' };
 
-/** "CVPR 2026, co-first author." plus any extra venue. */
+export const ownership = (d: PaperData): string | undefined => OWNERSHIP[d.role];
+
+/** "IROS 2024, oral pitch, co-first author." plus any extra venue. Used for plain text. */
 export function venueLine(d: PaperData): string {
-  const main = [d.venue, OWNERSHIP[d.role]].filter(Boolean).join(', ');
+  const presentation = clean(d.presentation)?.toLowerCase();
+  const main = [d.venue, presentation, ownership(d)].filter(Boolean).join(', ');
   const also = clean(d.also_presented);
   return also ? `${main}. Also presented at ${also}.` : `${main}.`;
+}
+
+export type Badge = { label: string; tone: 'solid' | 'accent' | 'quiet' };
+
+/** Badges for a paper: the venue, how it was presented, the role and one impact figure. */
+export function badges(d: PaperData): Badge[] {
+  const role = ownership(d);
+  const list: Badge[] = [{ label: d.venue, tone: 'solid' }];
+  if (clean(d.presentation)) list.push({ label: d.presentation as string, tone: 'accent' });
+  if (role) list.push({ label: role.charAt(0).toUpperCase() + role.slice(1), tone: 'quiet' });
+  if (clean(d.proof)) list.push({ label: d.proof as string, tone: 'quiet' });
+  return list;
+}
+
+/** "CVPR '26", "ICML '26 workshop", "IROS '24, oral pitch": the venue on a research chip. */
+export function shortVenue(d: PaperData): string {
+  const year = d.venue.match(/\b(?:19|20)(\d{2})\b/)?.[1];
+  const name = d.venue.split(/\s+(?:19|20)\d{2}\b/)[0].trim();
+  const base = year ? `${name} '${year}` : d.venue;
+  const workshop = d.type === 'workshop' ? ' workshop' : '';
+  const presentation = clean(d.presentation) ? `, ${(d.presentation as string).toLowerCase()}` : '';
+  return `${base}${workshop}${presentation}`;
 }
 
 export function paperYear(d: PaperData): number {

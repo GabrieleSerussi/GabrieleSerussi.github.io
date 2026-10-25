@@ -1,0 +1,44 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { clean, track } from '../lib/site';
+import { shortVenue, type Paper } from '../lib/papers';
+
+interface Props {
+  research: CollectionEntry<'profile'>['data']['research'];
+  papers: Paper[];
+  /** Papers listed on the homepage; the rest link to the publications page. */
+  onPage: Set<string>;
+}
+
+// The research vision: a lede, three pillars, and the papers that back each pillar.
+const { research, papers, onPage } = Astro.props;
+const byId = new Map(papers.map((p) => [p.id, p]));
+---
+<section class="section" id="research" aria-labelledby="research-title">
+  <div class="section-head">
+    <h2 id="research-title">Research</h2>
+  </div>
+  <p class="lede">{research.lede}</p>
+  <div class="pillars">
+    {research.pillars.map((pillar) => (
+      <article class="pillar">
+        <p class="pillar-kicker">{pillar.kicker}</p>
+        <h3>{pillar.title}</h3>
+        <p>{pillar.text}</p>
+        {pillar.papers.length > 0 && (
+          <ul class="chips">
+            {pillar.papers.map((id) => {
+              const p = byId.get(id);
+              if (!p) return null;
+              const href = onPage.has(id) ? `#paper-${id}` : `/publications/#paper-${id}`;
+              return (
+                <li><a class="chip" href={href} data-goatcounter-click={track('research', id)}><b>{clean(p.data.short) ?? p.data.title}</b><span>{shortVenue(p.data)}</span></a></li>
+              );
+            })}
+          </ul>
+        )}
+      </article>
+    ))}
+  </div>
+  {research.thread && <p class="thread">{research.thread}</p>}
+</section>

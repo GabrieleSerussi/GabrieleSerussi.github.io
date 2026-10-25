@@ -1,0 +1,35 @@
+---
+import Teaser from './Teaser.astro';
+import { clean, track } from '../lib/site';
+import type { Paper } from '../lib/papers';
+
+interface Props {
+  papers: Paper[];
+}
+
+// The best work as pictures first: a teaser, the venue, a short name and one result.
+const { papers } = Astro.props;
+---
+{papers.length > 0 && (
+  <section class="section" aria-labelledby="highlights-title">
+    <div class="section-head">
+      <h2 id="highlights-title">Highlights</h2>
+    </div>
+    <ul class="highlights">
+      {papers.map((p) => {
+        const d = p.data;
+        const badge = [d.venue, clean(d.presentation)].filter(Boolean).join(' · ');
+        return (
+          <li class="highlight">
+            <div class="media">
+              <Teaser id={p.id} title={d.title} alt={clean(d.teaser_alt)} sizes="(min-width: 64rem) 16rem, (min-width: 30rem) 46vw, 100vw" />
+            </div>
+            <span class="badge badge--overlay">{badge}</span>
+            <h3><a href={`#paper-${p.id}`} data-goatcounter-click={track('highlight', p.id)}>{clean(d.short) ?? d.title}</a></h3>
+            {clean(d.hook) && <p>{d.hook}</p>}
+          </li>
+        );
+      })}
+    </ul>
+  </section>
+)}

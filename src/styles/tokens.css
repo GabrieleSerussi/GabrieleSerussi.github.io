@@ -1,54 +1,58 @@
 /*
-  Contact-sheet design tokens.
-  Amber marks "the part that matters" (lit frames, link underlines) and nothing else.
-  It is too light for text on white, so it never carries text or focus on its own.
+  Editorial design tokens.
+  A white page and ink text let the work carry the colour: videos, figures and the portrait.
+  Newsreader (serif) sets the voice for names, the mission line and headings; Mona Sans keeps
+  text and metadata crisp. One accent, vermilion, marks the call to action and the pillars.
+  Dark mode follows the visitor's system setting, with no script and no toggle.
 */
 :root {
-  --frame-white: #f3f5f7;
-  --graphite: #1e242c;
-  --slate: #5e6873; /* 5.2:1 on frame white */
-  --rule: #d6dce2;
-  --keyframe-amber: #f0a500;
-  --darkroom: #14171b;
+  --page: #ffffff;
+  --surface: #f6f6f4;
+  --line: #ebebeb;
+  --line-strong: #d4d4d4;
+  --ink: #141414;
+  --ink-muted: #5a5a5a; /* 6.9:1 on the page */
+  --accent: #b23a12; /* 6.0:1 on the page, so it can carry small text */
+  --accent-soft: #fdf3ee;
+  --accent-ink: #ffffff; /* text on the accent, 6.0:1 */
+  --solid: #141414; /* filled badges and the primary button */
+  --solid-ink: #ffffff;
+  --tile: #ffffff; /* behind logos, which are drawn for a light background */
 
-  --bg: var(--frame-white);
-  --text: var(--graphite);
-  --muted: var(--slate);
-  --line: var(--rule);
-  --accent: var(--keyframe-amber);
-  --accent-wash: color-mix(in srgb, var(--keyframe-amber) 26%, transparent);
+  --display: 'Newsreader Variable', 'Newsreader', Georgia, 'Times New Roman', serif;
+  --text: 'Mona Sans Variable', 'Mona Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
 
-  --font: 'Mona Sans Variable', 'Mona Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --fs-name: clamp(2.5rem, 1.7rem + 2.6vw, 3.5rem);
+  --fs-mission: clamp(1.35rem, 1.1rem + 0.9vw, 1.75rem);
+  --fs-h2: clamp(1.75rem, 1.4rem + 1.2vw, 2.125rem);
+  --fs-h3: clamp(1.15rem, 1.05rem + 0.4vw, 1.3rem);
+  --fs-body: 1.0625rem;
+  --fs-small: 0.9375rem;
+  --fs-meta: 0.8125rem;
 
-  /* Mona Sans width axis carries the hierarchy: wide for identity, normal for reading,
-     condensed for metadata. It doubles as the site's compression idea. */
-  --wide: 'wdth' 125;
-  --normal: 'wdth' 100;
-  --condensed: 'wdth' 87.5;
-
-  /* Type scale from the classic sequence: 14 / 17 (18) / 21 / 36 / 48 px */
-  --step--1: 0.875rem;
-  --step-0: 1.0625rem;
-  --step-0-wide: 1.125rem;
-  --step-1: 1.3125rem;
-  --step-2: 2.25rem;
-  --step-3: 3rem;
-
-  --measure: 68ch;
-  --page: 47rem;
-  --space-m: 1.5rem;
-  --space-l: 3rem;
-  --radius-frame: 2px;
+  --container: 68rem;
+  --gutter: clamp(1.25rem, 0.6rem + 2.6vw, 2.5rem);
+  --section: clamp(4rem, 2.8rem + 3.6vw, 5.5rem);
+  --radius: 12px;
+  --radius-sm: 6px;
 
   color-scheme: light dark;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: var(--darkroom);
-    --text: #e7eaee;
-    --muted: #9aa4af; /* 7.1:1 on darkroom */
-    --line: #2a3038;
-    --accent-wash: color-mix(in srgb, var(--keyframe-amber) 30%, transparent);
+    --page: #111111;
+    --surface: #1a1a1a;
+    --line: #262626;
+    --line-strong: #3a3a3a;
+    --ink: #ededed;
+    --ink-muted: #a6a6a6; /* 7.8:1 on the dark page */
+    --accent: #ff8f66; /* 8.4:1 on the dark page */
+    --accent-soft: #24170f;
+    --accent-ink: #111111; /* 8.4:1 on the dark-mode accent */
+    --solid: #ededed;
+    --solid-ink: #111111;
+    --tile: #f4f4f4;
   }
 }

@@ -1,0 +1,40 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import { clean } from '../lib/site';
+import { findMark } from '../lib/media';
+
+interface Props {
+  entries: CollectionEntry<'profile'>['data']['timeline'];
+}
+
+// Experience and education, newest first. A square mark for each organisation; without one,
+// its initial stands in.
+const { entries } = Astro.props;
+---
+{entries.length > 0 && (
+  <section class="section" id="experience" aria-labelledby="experience-title">
+    <div class="section-head">
+      <h2 id="experience-title">Experience and education</h2>
+    </div>
+    <ul class="timeline">
+      {entries.map((t) => {
+        const mark = t.logo ? findMark(t.logo) : undefined;
+        const url = clean(t.url);
+        const when = clean(t.when);
+        return (
+          <li>
+            <span class="mark" aria-hidden="true">
+              {mark ? <Image src={mark} alt="" width={52} densities={[1, 2, 3]} /> : t.org.charAt(0)}
+            </span>
+            <div>
+              <p class="timeline-org">{url ? <a href={url}>{t.org}</a> : t.org}</p>
+              <p class="timeline-role">{t.role}</p>
+            </div>
+            {when && <p class="timeline-when">{when}</p>}
+          </li>
+        );
+      })}
+    </ul>
+  </section>
+)}

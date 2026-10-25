@@ -1,0 +1,35 @@
+import type { CollectionEntry } from 'astro:content';
+import { clean, stripMd } from './site';
+import type { Paper } from './papers';
+
+type Profile = CollectionEntry<'profile'>['data'];
+
+/**
+ * The profile as plain prose for llms.txt and llms-full.txt: the credentials, the research lede,
+ * one paragraph per pillar naming its papers, and the thread. Generated from the same data as
+ * the page, so the two never drift.
+ */
+export function profileProse(profile: Profile, papers: Paper[], base: string): string {
+  const byId = new Map(papers.map((p) => [p.id, p]));
+  const pillars = profile.research.pillars.map((pillar) => {
+    const names = pillar.papers
+      .map((id) => byId.get(id))
+      .filter((p): p is Paper => Boolean(p))
+      .map((p) => `${clean(p.data.short) ?? p.data.title} (${p.data.venue})`);
+    const backing = names.length > 0 ? ` Papers: ${names.join(', ')}.` : '';
+    return `${pillar.title}. ${pillar.text}${backing}`;
+  });
+  return [
+    stripMd(profile.credentials, base),
+    profile.research.lede,
+    ...pillars,
+    ...(profile.research.thread ? [profile.research.thread] : []),
+  ].join('\n\n');
+}
+
+/** "Research Intern, Decart (dates)" lines for the experience and education timeline. */
+export const timelineLines = (profile: Profile): string[] =>
+  profile.timeline.map((t) => {
+    const when = clean(t.when);
+    return `- ${t.role}, ${t.org}${when ? ` (${when})` : ''}`;
+  });

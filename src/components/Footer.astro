@@ -1,13 +1,12 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-import { PROFILE_LINKS, clean, lastUpdated } from '../lib/site';
+import { PROFILE_LINKS, clean, lastUpdated, track } from '../lib/site';
 
 interface Props {
   profile: CollectionEntry<'profile'>['data'];
 }
 
 const { profile } = Astro.props;
-const email = clean(profile.email);
 const links = Object.entries(PROFILE_LINKS)
   .map(([key, label]) => ({ label, href: clean(profile.links[key]) }))
   .filter((l): l is { label: string; href: string } => Boolean(l.href));
@@ -15,11 +14,10 @@ const updated = lastUpdated();
 const day = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
 ---
 <footer class="site-footer">
-  {email && <p><a href={`mailto:${email}`}>{email}</a></p>}
+  <p>{profile.name}. Last updated <time datetime={updated.toISOString().slice(0, 10)}>{day.format(updated)}</time>.</p>
   <ul aria-label="Profiles">
     {links.map((l) => (
-      <li><a href={l.href}>{l.label}</a></li>
+      <li><a href={l.href} rel="me" data-goatcounter-click={track('footer', l.label)}>{l.label}</a></li>
     ))}
   </ul>
-  <p>Last updated <time datetime={updated.toISOString().slice(0, 10)}>{day.format(updated)}</time></p>
 </footer>
