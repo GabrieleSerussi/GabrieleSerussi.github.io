@@ -47,6 +47,7 @@ const me = Object.values(profile.links).filter((v): v is string => Boolean(clean
   me={me}
   twitter={xHandle(profile.links.x)}
   current="home"
+  verification={profile.site_verification}
 >
   {!IS_PRODUCTION && <StagingPanel issues={issues} />}
   <main id="main">

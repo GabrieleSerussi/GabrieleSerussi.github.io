@@ -102,6 +102,7 @@ const profile = defineCollection({
     cv: z.string().optional(),
     links: z.record(z.string(), z.string()).default({}),
     knows_about: z.array(z.string()).default([]),
+    site_verification: z.object({ google: z.string().optional(), bing: z.string().optional() }).default({}),
     goatcounter: z.string().default(''),
   }),
 });

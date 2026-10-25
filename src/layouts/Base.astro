@@ -21,9 +21,11 @@ interface Props {
   /** X handle for link previews, e.g. "@GSerussi". */
   twitter?: string;
   current?: 'home' | 'publications';
+  /** Search Console and Bing Webmaster ownership codes; only the homepage needs them. */
+  verification?: { google?: string; bing?: string };
 }
 
-const { title, description, name, jsonLd, goatcounter, noindex = false, me = [], twitter, current } = Astro.props;
+const { title, description, name, jsonLd, goatcounter, noindex = false, me = [], twitter, current, verification } = Astro.props;
 // Analytics only count real visitors: production builds with a GoatCounter code.
 const counter = IS_PRODUCTION && goatcounter ? `https://${goatcounter}.goatcounter.com/count` : undefined;
 const nav = [
@@ -42,6 +44,8 @@ const nav = [
     <link rel="preload" href={displayFont} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={textFont} as="font" type="font/woff2" crossorigin />
     <Seo title={title} description={description} jsonLd={jsonLd} noindex={noindex || !IS_PRODUCTION} author={name} twitter={twitter} />
+    {verification?.google && <meta name="google-site-verification" content={verification.google} />}
+    {verification?.bing && <meta name="msvalidate.01" content={verification.bing} />}
     <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#111111" media="(prefers-color-scheme: dark)" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />

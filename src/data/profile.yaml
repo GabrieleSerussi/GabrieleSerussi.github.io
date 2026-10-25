@@ -124,4 +124,8 @@ me:
     - Hardware-aware optimization
   # Private analytics: your GoatCounter site code (the "xyz" in xyz.goatcounter.com). Only you can
   # see the dashboard. Counting runs on production builds only.
+  # Ownership checks for Google Search Console and Bing Webmaster Tools (homepage meta tags).
+  site_verification:
+    google: DyvLbUQH1EYZOYW8RjsGRZu3xBzlKexrkIgWEmryLdM
+    bing: E1341797C12CA5E96F71D4984FF728AB
   goatcounter: gabrieleserussi
