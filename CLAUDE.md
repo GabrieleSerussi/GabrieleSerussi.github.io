@@ -7,7 +7,7 @@ This repo is public. Everything in it, including this file, YAML comments and th
 ## Current state
 
 - The site builds with Astro 7.3 on Node 24, and `package-lock.json` is committed. On Gabriele's Mac, Node is Homebrew's keg-only `node@24`, so commands need `/opt/homebrew/opt/node@24/bin` on PATH. Keep the design and behavior; fix the code.
-- We are in milestone M2 (design pass). See Roadmap. Gabriele supplied the Decart start date (May 2026), his DBLP page (verified) and his contact email serussig@post.bgu.ac.il on 2026-10-25. On 2026-10-25 the site was rebuilt in the editorial style after a study of seven researcher sites Gabriele admires (Yanjie Ze, Chung Min Kim, Xichen Pan, Jiankai Sun, Botao He, Yihuai Gao, Roy Amoyal). He chose it over a classic academic and the earlier cinematic version, and said he is attached to no style: the most effective site wins. Gabriele dropped the CV link.
+- The site is live at https://gabrieleserussi.github.io (launched 2026-10-25). Pushing to `main` deploys production directly, so ask before pushing. Gabriele supplied the Decart start date (May 2026), his DBLP page (verified) and his contact email serussig@post.bgu.ac.il on 2026-10-25. On 2026-10-25 the site was rebuilt in the editorial style after a study of seven researcher sites Gabriele admires (Yanjie Ze, Chung Min Kim, Xichen Pan, Jiankai Sun, Botao He, Yihuai Gao, Roy Amoyal). He chose it over a classic academic and the earlier cinematic version, and said he is attached to no style: the most effective site wins. Gabriele dropped the CV link.
 
 ## Commands
 
@@ -94,7 +94,7 @@ Tokens live in `src/styles/tokens.css`:
 
 - `npm run build` passes, and `npm run release` too when the change affects launch readiness.
 - Check the homepage at 390px and 1280px wide, in light and dark mode, and with reduced motion. No horizontal scrolling (open the BibTeX blocks too), keyboard focus visible, text contrast at least 4.5:1, badges included.
-- Show Gabriele the result in the preview before committing. Commit in small steps with clear messages. Pushing to `main` deploys staging, so ask before pushing.
+- Show Gabriele the result in the preview before committing. Commit in small steps with clear messages. Pushing to `main` deploys the live site, so ask before pushing.
 - Don't touch DNS, Cloudflare, GitHub settings or the stage logic in the deploy workflow, and don't add `public/CNAME`: the site stays on the free github.io address.
 - Never create a HERBench page or folder: gabrieleserussi.github.io/HERBench is served from a separate repo.
 
@@ -102,5 +102,5 @@ Tokens live in `src/styles/tokens.css`:
 
 - M2, design (now): done. See Current state.
 - M3, hardening: a pull-request checks workflow (build, link check with lychee, Lighthouse budgets), Dependabot for npm and GitHub Actions, the GoatCounter code in `profile.yaml`. The contact email is his BGU address; a hello@ address on the domain stays optional.
-- M4, launch: Gabriele creates the GitHub repo and the GoatCounter account, the code goes into `profile.yaml`, and `SITE_STAGE` is set to `production`. Then verify that https://gabrieleserussi.github.io and /HERBench/ return 200 and that visits appear in GoatCounter.
+- M4, launch: done on 2026-10-25. The repo GabrieleSerussi/GabrieleSerussi.github.io deploys from `main`, `SITE_STAGE` is `production`, every page and /HERBench/ return 200, and GoatCounter (code `gabrieleserussi`) receives visits.
 - Later: a PREGEN project page, then a longer research post.
