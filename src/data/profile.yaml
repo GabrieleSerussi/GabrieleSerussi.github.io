@@ -1,43 +1,97 @@
 # Everything about you that appears on the site. The build checks it on every run.
+# [label](url) makes a link; #paper-<id> jumps to a paper on the homepage.
 me:
   name: Gabriele Serussi
-  site_title: Gabriele Serussi
-  tagline: I build video models that spend only the compute they need.
-  tagline_detail: Real-time generation, long-context memory, and efficient video understanding.
+  # The <title> of the homepage and the first line of link previews. Keep it under 60 characters.
+  site_title: Gabriele Serussi | Efficient world models and video AI
+  # The mission line under your name.
+  tagline: I build world models that spend only the compute they need.
+  # One line of credentials under the mission. Advisors are the only personal names on the site
+  # outside author lists (Gabriele's choice, 2026-10-25). Education matches ORCID.
+  credentials: >-
+    PhD student at [Ben-Gurion University](https://www.bgu.ac.il/en/), advised by Prof. Chaim
+    Baskin in the [INSIGHT Lab](https://insight.interia.website/), and Research Intern at
+    [Decart](https://decart.ai), working on real-time video generation. MSc in Computer Science
+    from the Technion, BSc in Computer Engineering from Sapienza University of Rome.
   # Search results and link previews show this. Keep it under 160 characters.
   description: >-
-    Gabriele Serussi is a PhD researcher at Ben-Gurion University's INSIGHT Lab
-    and an AI Researcher at Decart, working on efficient, real-time video models.
+    Gabriele Serussi is a PhD researcher at Ben-Gurion University's INSIGHT Lab and a Research
+    Intern at Decart, working on efficient world models and video AI.
   affiliations:
-    - role: PhD researcher
+    - role: PhD student
       org: INSIGHT Lab, Ben-Gurion University
       org_formal: Ben-Gurion University of the Negev
-      url: https://insight.interia.website/   # check this is the lab's current address
+      url: https://insight.interia.website/
       kind: university
-    - role: AI Researcher   # swap in the Decart-approved title
+      # Files in src/assets/logos/: <name>.png in colour, <name>-dark.png in white for dark mode.
+      logos: [insight-lab, bgu]
+    - role: Research Intern
       org: Decart
       url: https://decart.ai
       kind: company
-  alumni_of: Technion – Israel Institute of Technology
-  # Paragraphs for the About section. [label](url) makes a link; #paper-<id> jumps to a paper below.
-  about:
-    - >-
-      I'm a PhD researcher at the [INSIGHT Lab](https://insight.interia.website/) at
-      Ben-Gurion University, advised by Prof. Chaim Baskin, and an AI Researcher at
-      [Decart](https://decart.ai), where I work on real-time video generation.
-    - >-
-      My work asks how little a video model can spend and still get the answer right.
-      Recent examples are [HERBench](#paper-herbench) (CVPR 2026), a benchmark showing that
-      Video-LLMs break down when an answer needs evidence from across a video;
-      [HiMu](#paper-himu), a training-free frame selector that matches uniform sampling with
-      a quarter of the frames; and [PREGEN](#paper-pregen), composed video retrieval without
-      fine-tuning the VLM.
-    - >-
-      Before that, I did my MSc at the Technion on acoustic localization for drones
-      ([IROS 2024](#paper-ears)).
-  open_to: I'm always happy to talk about efficient video models, world models and research collaborations.
-  email: TODO   # hello@gabrieleserussi.com once Cloudflare Email Routing is on
-  cv: /cv.pdf   # put the PDF at public/cv.pdf
+      logos: [decart]
+  # Official names, for structured data only.
+  alumni_of:
+    - Technion – Israel Institute of Technology
+    - Sapienza University of Rome
+  advisor: Chaim Baskin
+
+  # The research section: one lede, three pillars with the papers that back them, one thread.
+  research:
+    lede: >-
+      A useful world model has to understand, generate and act on a budget. My work covers all
+      three, and efficiency runs through it, from what a model looks at to the hardware it runs on.
+    pillars:
+      - kicker: Understand
+        title: Long-video understanding
+        text: >-
+          Benchmarks that show where Video-LLMs fail, and methods that let them look at less or
+          train less.
+        papers: [herbench, himu, vedje, pregen]
+      - kicker: Generate
+        title: Generative world models
+        text: >-
+          Real-time video generation at Decart, and diffusion bridges that translate between
+          modalities with less paired data, or none.
+        papers: [sdb]
+      - kicker: Act
+        title: Robotics
+        text: >-
+          Drones that shape their own rotor noise to localize themselves, and a growing interest
+          in world models for robots.
+        papers: [ears]
+    thread: >-
+      Newest direction: hardware-aware efficiency, making models fast on the chips they actually
+      run on.
+
+  # Experience and education, newest first. "logo" is a square mark in src/assets/logos/<logo>-mark.png;
+  # without one the entry shows the organisation's initial. Dates come from ORCID.
+  timeline:
+    - org: Decart
+      role: Research Intern, real-time video generation
+      when: May 2026 to present
+      url: https://decart.ai
+      logo: decart
+    - org: Ben-Gurion University of the Negev
+      role: PhD, Electrical and Computer Engineering, INSIGHT Lab, advised by Prof. Chaim Baskin
+      when: Nov 2024 to present
+      url: https://www.bgu.ac.il/en/
+      logo: bgu
+    - org: Technion, Israel Institute of Technology
+      role: MSc, Computer Science, advised by Prof. Alex Bronstein
+      when: 2021 to 2024
+      url: https://www.technion.ac.il/en/
+      logo: technion
+    - org: Sapienza University of Rome
+      role: BSc, Computer Engineering
+      when: 2018 to 2021
+      url: https://www.uniroma1.it/en
+      # The seal from the official logo in the uniroma1.it header.
+      logo: sapienza
+
+  open_to: I'm always happy to talk about world models, efficient video models, robotics and research collaborations.
+  email: serussig@post.bgu.ac.il
+  # To link a CV, add "cv: /cv.pdf" here and put the PDF at public/cv.pdf.
   links:
     scholar: https://scholar.google.com/citations?user=GJ19YUEAAAAJ
     github: https://github.com/GabrieleSerussi
@@ -46,12 +100,19 @@ me:
     orcid: https://orcid.org/0009-0001-4280-4918
     openreview: https://openreview.net/profile?id=~Gabriele_Serussi1
     alphaxiv: https://www.alphaxiv.org/@gabriele-serussi
-    dblp: TODO               # your persistent DBLP URL
-    semantic_scholar: TODO   # your Semantic Scholar author page
-    huggingface: TODO        # your Hugging Face profile
+    dblp: https://dblp.org/pid/371/3989.html
+    semantic_scholar: https://www.semanticscholar.org/author/2288184194
+    huggingface: https://huggingface.co/GSerussi
+  # Given to search engines and AI assistants as the topics you know about.
   knows_about:
-    - video generation
-    - efficient deep learning
-    - video understanding
-    - multimodal learning
-  goatcounter: ""   # your GoatCounter code, e.g. "gabrieleserussi". Analytics stay off until set.
+    - World models
+    - Video generation
+    - Video understanding
+    - Generative modeling
+    - Robotics
+    - Efficient deep learning
+    - Representation learning
+    - Hardware-aware optimization
+  # Private analytics: your GoatCounter site code (the "xyz" in xyz.goatcounter.com). Only you can
+  # see the dashboard. Counting runs on production builds only.
+  goatcounter: gabrieleserussi

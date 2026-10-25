@@ -1,87 +1,192 @@
 # papers.yaml: the single source of truth for the homepage, the publications page and llms.txt.
-# Replace this file with your corrected version (delete any "teaser:" lines; teasers are found
-# by file name). Order matters: selected papers appear on the homepage in this order.
+# Order matters: selected papers appear on the homepage in this order.
 # Rules: a venue goes in only once it's publicly announced. "*" marks equal contribution.
 # Staging builds list every remaining TODO; production builds refuse to run until they're gone.
+# Teasers are found by file name: public/media/<id>/teaser.* first, then src/assets/teasers/<id>.png.
+# emphasis: "lead" = highlight card and full row, "standard" = full row with teaser,
+# "brief" = one row without teaser or tldr on the homepage.
+# Copy: lead with what most makes a reader want to read more, then the proof. "hook" is the
+# card line for people; "tldr" is one sentence that also names the task for search engines and
+# AI assistants; "keywords" feed the structured data. Every number comes from the paper.
+# BibTeX entries are the official exports (CVF, arXiv, OpenReview, IEEE via Crossref).
 
 - id: herbench
   title: "HERBench: A Benchmark for Multi-Evidence Integration in Video Question Answering"
+  short: HERBench
   authors: ["Dan Ben-Ami*", "Gabriele Serussi*", "Kobi Cohen", "Chaim Baskin"]
   venue: "CVPR 2026"
   type: conference
   role: "co-first author"
   theme: "video understanding"
   selected: true
-  tldr: "Video QA where every question needs at least three separated pieces of evidence; 13 Video-LLMs score 31–42% (random: 20%)."
+  emphasis: lead
+  hook: "Each question forces a model to combine at least three cues from different parts of a video, and 13 Video-LLMs score only 31 to 42%."
+  # Impact shown as a badge. Hugging Face API, 11,424 all-time downloads on 2026-10-25.
+  proof: "11k+ dataset downloads"
+  tldr: "HERBench forces video models to aggregate evidence: each of its 26,806 questions needs at least three separate cues from distinct parts of the video, and 13 state-of-the-art Video-LLMs reach only 31 to 42% (random is 20%)."
+  keywords: ["video question answering", "VideoQA benchmark", "multi-evidence reasoning", "long video understanding", "Video-LLMs", "frame selection"]
+  teaser_alt: "Two shots from the Temporal Shot Ordering example in the HERBench project video, a spaceship in space and the Statue of Liberty at dawn or dusk, each captioned with the shot description the question lists."
   links:
     paper: "https://openaccess.thecvf.com/content/CVPR2026/papers/Ami_HERBench_A_Benchmark_for_Multi-Evidence_Integration_in_Video_Question_Answering_CVPR_2026_paper.pdf"
     arxiv: "https://arxiv.org/abs/2512.14870"
     project: "https://gabrieleserussi.github.io/HERBench/"
     code: "https://github.com/DanBenAmi/HERBench"
     dataset: "https://huggingface.co/datasets/DanBenAmi/HERBench"
-
-- id: himu
-  title: "HiMu: Hierarchical Multimodal Frame Selection for Long Video Question Answering"
-  authors: ["Dan Ben-Ami", "Gabriele Serussi", "Kobi Cohen", "Chaim Baskin"]
-  venue: "arXiv 2026"
-  type: preprint
-  role: "second author"
-  theme: "efficient video understanding"
-  selected: true
-  tldr: "Training-free frame selector that matches uniform sampling with a quarter of the frames."
-  links:
-    arxiv: "https://arxiv.org/abs/2603.18558"
-    project: "TODO"
-    code: "TODO"
-
-- id: pregen
-  title: "PREGEN: Uncovering Latent Thoughts in Composed Video Retrieval"
-  authors: ["Gabriele Serussi", "David Vainshtein", "Jonathan Kouchly", "Dotan Di Castro", "Chaim Baskin"]
-  note: "TODO: confirm the full author list and order against arXiv"
-  venue: "arXiv 2026"
-  type: preprint
-  role: "first author"
-  theme: "efficient video understanding"
-  selected: true
-  tldr: "Composed video retrieval with a frozen VLM plus a lightweight encoder, with no VLM fine-tuning."
-  links:
-    arxiv: "https://arxiv.org/abs/2601.13797"
-    code: "TODO"
-
-- id: vedje
-  title: "VEDJE: Video-Efficient Discriminative Joint Encoder for Scalable Video-Text Retrieval"
-  authors: ["Shahaf Wagner", "Gabriele Serussi", "Dan Ben Ami", "Tomer Galanti", "Chaim Baskin"]
-  venue: "ICML 2026 Workshop (AdaptFM)"
-  type: workshop
-  role: "second author"
-  theme: "efficient video understanding"
-  selected: false
-  tldr: "TODO: one sentence with the key number"
-  links:
-    openreview: "TODO"
+  bibtex: |-
+    @InProceedings{Ben_Ami_2026_CVPR,
+        author    = {Ben Ami, Dan and Serussi, Gabriele and Cohen, Kobi and Baskin, Chaim},
+        title     = {HERBench: A Benchmark for Multi-Evidence Integration in Video Question Answering},
+        booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+        month     = {June},
+        year      = {2026},
+        pages     = {4505-4514}
+    }
 
 - id: sdb
   title: "Structured Diffusion Bridges: Inductive Bias for Denoising Diffusion Bridges"
-  authors: ["TODO"]
-  venue: "arXiv 2026"
-  type: preprint
+  short: Structured Diffusion Bridges
+  authors: ["Eitan Kosman", "Gabriele Serussi", "Chaim Baskin"]
+  venue: "ICML 2026"
+  type: conference
   role: "second author"
   theme: "generative models"
-  selected: false
+  selected: true
+  emphasis: lead
+  # Table 2: SDB 25.2 PSNR at half the pairs, the fully paired LDDBM baseline 25.6.
+  hook: "Diffusion bridges that reach near fully paired quality with half the pairs and still learn with none."
+  tldr: "Structured Diffusion Bridges reach near fully paired quality in modality translation with half the paired data, 25.2 PSNR against 25.6 for a fully paired baseline on zero-shot super-resolution, and still learn with no pairs at all."
+  keywords: ["diffusion bridges", "modality translation", "unpaired learning", "semi-paired learning", "cycle consistency", "super-resolution", "multi-view to 3D"]
+  teaser_alt: "Forward and reverse diffusion bridges between two modalities, with the marginal matching and cycle consistency constraints drawn over their trajectories."
   links:
     arxiv: "https://arxiv.org/abs/2605.02973"
+    openreview: "https://openreview.net/forum?id=nWI6lV7BvA"
+  bibtex: |-
+    @inproceedings{kosman2026structured,
+    title={Structured Diffusion Bridges: Inductive Bias for Denoising Diffusion Bridges},
+    author={Eitan Kosman and Gabriele Serussi and Chaim Baskin},
+    booktitle={Forty-third International Conference on Machine Learning},
+    year={2026},
+    url={https://openreview.net/forum?id=nWI6lV7BvA}
+    }
+
+# Accepted at WACV 2027 (Gabriele, 2026-10-25). The arXiv version does not mention it yet.
+- id: himu
+  title: "HiMu: Hierarchical Multimodal Frame Selection for Long Video Question Answering"
+  short: HiMu
+  authors: ["Dan Ben-Ami", "Gabriele Serussi", "Kobi Cohen", "Chaim Baskin"]
+  venue: "WACV 2027"
+  type: conference
+  role: "second author"
+  theme: "efficient video understanding"
+  selected: true
+  emphasis: lead
+  # Section 4.3: with K=16 frames HiMu reaches 73.2% on Video-MME (Qwen3-VL-8B), uniform with K=64 71.7%.
+  hook: "Picks 16 frames that beat 64 uniformly sampled ones on Video-MME, without any training."
+  tldr: "With 16 frames chosen by HiMu, a training-free frame selector for long-video question answering, Qwen3-VL-8B scores 73.2% on Video-MME, above its 71.7% with 64 uniformly sampled frames."
+  keywords: ["frame selection", "long video question answering", "multimodal large language models", "training-free", "neuro-symbolic reasoning", "audio-visual"]
+  teaser_alt: "Score curves from several experts over a basketball broadcast, combined into one satisfaction curve that picks four frames."
+  links:
+    arxiv: "https://arxiv.org/abs/2603.18558"
+  bibtex: |-
+    @misc{benami2026himuhierarchicalmultimodalframe,
+          title={HiMu: Hierarchical Multimodal Frame Selection for Long Video Question Answering},
+          author={Dan Ben-Ami and Gabriele Serussi and Kobi Cohen and Chaim Baskin},
+          year={2026},
+          eprint={2603.18558},
+          archivePrefix={arXiv},
+          primaryClass={cs.CV},
+          url={https://arxiv.org/abs/2603.18558},
+    }
 
 - id: ears
-  title: "Active Propulsion Noise Shaping for Multi-Rotor Aircraft Localization"
+  title: "Active propulsion noise shaping for multi-rotor aircraft localization"
+  short: Rotor-noise localization
   authors: ["Gabriele Serussi*", "Tamir Shor*", "Tom Hirshberg", "Chaim Baskin", "Alex M. Bronstein"]
   venue: "IROS 2024"
+  presentation: "Oral pitch"
   also_presented: "ICML 2024 Workshop (AI4Science)"
   type: conference
   role: "co-first author"
-  theme: "earlier work: robotics and acoustics"
+  theme: "robotics and acoustics"
   selected: true
-  tldr: "Shaping a drone's own rotor noise, learned jointly with a neural localizer, for accurate acoustic self-localization."
+  emphasis: lead
+  # Results: learned phases beat the best handcrafted modulation by over 2.7 times, in simulation
+  # fitted to real rotor recordings.
+  hook: "A drone that localizes itself by listening to its own rotor noise, which it learns to shape."
+  tldr: "Learning a drone's rotor phases together with a neural localizer lets it localize itself from its own propulsion noise, more than 2.7 times better in simulation than the best handcrafted modulation."
+  keywords: ["drone localization", "acoustic localization", "multi-rotor aircraft", "propulsion noise", "rotor phase modulation", "robotics"]
+  teaser_alt: "Simulated sound pressure around a four-rotor drone in a square room, with positive pressure in red and negative in blue."
   links:
     paper: "https://doi.org/10.1109/IROS58592.2024.10802115"
     arxiv: "https://arxiv.org/abs/2402.17289"
     code: "https://github.com/tamirshor7/EARS_code"
+  bibtex: |-
+    @inproceedings{Serussi_2024,
+      title={Active propulsion noise shaping for multi-rotor aircraft localization},
+      url={http://dx.doi.org/10.1109/IROS58592.2024.10802115},
+      DOI={10.1109/iros58592.2024.10802115},
+      booktitle={2024 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)},
+      publisher={IEEE},
+      author={Serussi, Gabriele and Shor, Tamir and Hirshberg, Tom and Baskin, Chaim and Bronstein, Alex M.},
+      year={2024},
+      month=oct,
+      pages={472--479}
+    }
+
+# arXiv 2610.11850 (v2, 2026-10-12) marks Shahaf Wagner and Gabriele Serussi as equal contributors.
+- id: vedje
+  title: "VEDJE: Video-Efficient Discriminative Joint Encoder for Scalable Video-Text Retrieval"
+  short: VEDJE
+  authors: ["Shahaf Wagner*", "Gabriele Serussi*", "Dan Ben Ami", "Tomer Galanti", "Chaim Baskin"]
+  venue: "ICML 2026 Workshop (AdaptFM)"
+  type: workshop
+  role: "co-first author"
+  theme: "efficient video understanding"
+  selected: true
+  emphasis: standard
+  # Table 1: VEDJE 59.8 T2V R@1 on MSR-VTT with about 157M online parameters (Figure 1); LamRA, the
+  # VideoChat-Flash-7B reproduction with a 7.6B base decoder, 59.7. 7.6B / 157M is about 48.
+  tldr: "VEDJE matches a 7.6B-parameter multimodal LLM retriever on MSR-VTT text-to-video retrieval (59.8 against 59.7 R@1) with about 157M online parameters, roughly 48 times fewer, by encoding each video once into a compact cache read by a 33M-parameter reranker."
+  keywords: ["video-text retrieval", "reranking", "cross-encoder", "video caching", "efficient retrieval", "MSR-VTT"]
+  teaser_alt: "Plot of MSR-VTT text-to-video R@1 against online model parameters, with VEDJE marked at 59.8 and about 157M parameters among published systems from 63M to 7.6B."
+  links:
+    arxiv: "https://arxiv.org/abs/2610.11850"
+    openreview: "https://openreview.net/forum?id=ZqB0Ab4juk"
+  bibtex: |-
+    @misc{wagner2026vedjevideoefficientdiscriminativejoint,
+          title={VEDJE: Video-Efficient Discriminative Joint Encoder for Scalable Video-Text Retrieval},
+          author={Shahaf Wagner and Gabriele Serussi and Dan Ben Ami and Tomer Galanti and Chaim Baskin},
+          year={2026},
+          eprint={2610.11850},
+          archivePrefix={arXiv},
+          primaryClass={cs.CV},
+          url={https://arxiv.org/abs/2610.11850},
+    }
+
+- id: pregen
+  title: "PREGEN: Uncovering Latent Thoughts in Composed Video Retrieval"
+  short: PREGEN
+  authors: ["Gabriele Serussi*", "David Vainshtein*", "Jonathan Kouchly*", "Dotan Di Castro", "Chaim Baskin"]
+  venue: "arXiv 2026"
+  type: preprint
+  role: "co-first author"
+  theme: "efficient video understanding"
+  selected: true
+  emphasis: brief
+  # The short preview shown on the homepage.
+  hook: "Reads a frozen VLM's hidden states to reach 99.73 Recall@1 on WebVid-CoVR, 27.23 points above the previous best."
+  # Table 1: 99.73 R@1 against 72.5 for UNITE instruct 7B, the previous best on WebVid-CoVR.
+  tldr: "PREGEN reaches 99.73 Recall@1 on WebVid-CoVR, 27.23 points above the previous best, by reading a frozen VLM's hidden states with a lightweight encoder for composed video retrieval."
+  keywords: ["composed video retrieval", "vision-language models", "frozen VLM", "hidden states", "WebVid-CoVR"]
+  links:
+    arxiv: "https://arxiv.org/abs/2601.13797"
+  bibtex: |-
+    @misc{serussi2026pregenuncoveringlatentthoughts,
+          title={PREGEN: Uncovering Latent Thoughts in Composed Video Retrieval},
+          author={Gabriele Serussi and David Vainshtein and Jonathan Kouchly and Dotan Di Castro and Chaim Baskin},
+          year={2026},
+          eprint={2601.13797},
+          archivePrefix={arXiv},
+          primaryClass={cs.CV},
+          url={https://arxiv.org/abs/2601.13797},
+    }

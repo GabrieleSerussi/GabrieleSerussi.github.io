@@ -1,15 +1,26 @@
 # Dated news. Anything older than 180 days drops off the homepage by itself.
-# Only list things that are already public. [label](url) makes a link.
-# Replace each "TODO confirm the date" once you've checked the date.
+# Only list things that are already public. [label](url) makes a link. Lead with what the
+# reader gains, keep one line, past tense.
+# Dates: WACV 2027 round 1 final decisions (wacv.thecvf.com Dates page, Oct 14), the arXiv v1
+# submission dates, the AdaptFM workshop day (icml.cc) and the HERBench poster session
+# (cvpr.thecvf.com).
+
+- id: wacv-2027-himu
+  date: 2026-10-14
+  text: "[HiMu](#paper-himu), a training-free frame selector for long videos, was accepted at WACV 2027."
+
+- id: vedje-arxiv
+  date: 2026-10-08
+  text: "[VEDJE](#paper-vedje), a cached reranker for scalable video-text retrieval, was posted to arXiv."
 
 - id: icml-2026-vedje
-  date: 2026-07-18
-  text: VEDJE was presented at the ICML 2026 AdaptFM workshop. TODO confirm the date.
+  date: 2026-07-11
+  text: "[VEDJE](https://openreview.net/forum?id=ZqB0Ab4juk) was presented at the ICML 2026 AdaptFM workshop in Seoul."
 
 - id: cvpr-2026-herbench
   date: 2026-06-05
-  text: Presented [HERBench](#paper-herbench) at CVPR 2026 in Denver. TODO confirm the date.
+  text: "[HERBench](#paper-herbench) was presented at CVPR 2026 in Denver."
 
 - id: sdb-arxiv
-  date: 2026-05-05
-  text: Structured Diffusion Bridges is out on [arXiv](https://arxiv.org/abs/2605.02973). TODO confirm the date.
+  date: 2026-05-03
+  text: "[Structured Diffusion Bridges](#paper-sdb), accepted at ICML 2026, was posted to arXiv."
