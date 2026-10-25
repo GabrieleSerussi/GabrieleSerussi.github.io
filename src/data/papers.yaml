@@ -175,6 +175,8 @@
   links:
     arxiv: "https://arxiv.org/abs/2610.11850"
     openreview: "https://openreview.net/forum?id=ZqB0Ab4juk"
+    project: "https://gabrieleserussi.github.io/vedje/"
+    code: "https://github.com/GabrieleSerussi/vedje"
   bibtex: |-
     @misc{wagner2026vedjevideoefficientdiscriminativejoint,
           title={VEDJE: Video-Efficient Discriminative Joint Encoder for Scalable Video-Text Retrieval},
