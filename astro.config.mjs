@@ -3,7 +3,8 @@ import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
-  // Canonical address from day one; staging builds are marked noindex until launch.
-  site: 'https://gabrieleserussi.com',
+  // The site lives at the free GitHub Pages address (no custom domain, by Gabriele's choice).
+  // Staging builds are marked noindex until launch.
+  site: 'https://gabrieleserussi.github.io',
   integrations: [sitemap()],
 });

@@ -7,3 +7,4 @@ dist/
 # Claude Code local files
 .claude/worktrees/
 .claude/settings.local.json
+.claude/launch.json
