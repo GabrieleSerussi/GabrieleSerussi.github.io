@@ -27,16 +27,15 @@ const pills = [
   { label: 'CV', href: cv },
 ].filter((p): p is { label: string; href: string; solid?: boolean } => Boolean(p.href));
 
-// Logos are drawn for a light page; dark mode swaps in the white versions.
+// Logos in the order of profile.yaml, each with its own link. They are drawn for a light page;
+// dark mode swaps in the white versions.
 const logos = await Promise.all(
-  profile.affiliations.flatMap((a) =>
-    a.logos.map(async (name) => {
-      const { light, dark } = findLogo(name);
-      if (!light) return undefined;
-      const [l, d] = await Promise.all([getImage({ src: light, height: 56 }), getImage({ src: dark ?? light, height: 56 })]);
-      return { name, org: a.org_formal ?? a.org, url: clean(a.url), light: l, dark: d };
-    }),
-  ),
+  profile.logos.map(async (logo) => {
+    const { light, dark } = findLogo(logo.file);
+    if (!light) return undefined;
+    const [l, d] = await Promise.all([getImage({ src: light, height: 56 }), getImage({ src: dark ?? light, height: 56 })]);
+    return { name: logo.file, org: logo.label, url: clean(logo.url), light: l, dark: d };
+  }),
 );
 const shown = logos.filter((l) => l !== undefined);
 ---

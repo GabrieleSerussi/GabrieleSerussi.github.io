@@ -66,10 +66,10 @@ const profile = defineCollection({
           org_formal: z.string().optional(),
           url: z.string().optional(),
           kind: z.enum(['university', 'company']),
-          logos: z.array(z.string()).default([]),
         }),
       )
       .min(1),
+    logos: z.array(z.object({ file: z.string(), label: z.string(), url: z.string() })).default([]),
     alumni_of: z.union([z.string(), z.array(z.string())]).optional(),
     advisor: z.string().optional(),
     research: z.object({

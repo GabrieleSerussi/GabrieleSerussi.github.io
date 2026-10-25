@@ -10,7 +10,7 @@ me:
   # outside author lists (Gabriele's choice, 2026-10-25). Education matches ORCID.
   credentials: >-
     PhD student at [Ben-Gurion University](https://www.bgu.ac.il/en/), advised by Prof. Chaim
-    Baskin in the [INSIGHT Lab](https://insight.interia.website/), and Research Intern at
+    Baskin in the [INSIGHT Lab](https://insight.bgu.ac.il/), and Research Intern at
     [Decart](https://decart.ai), working on real-time video generation. MSc in Computer Science
     from the Technion, BSc in Computer Engineering from Sapienza University of Rome.
   # Search results and link previews show this. Keep it under 160 characters.
@@ -21,16 +21,25 @@ me:
     - role: PhD student
       org: INSIGHT Lab, Ben-Gurion University
       org_formal: Ben-Gurion University of the Negev
-      url: https://insight.interia.website/
+      url: https://insight.bgu.ac.il/
       kind: university
-      # Files in src/assets/logos/: <name>.png in colour, <name>-dark.png in white for dark mode.
-      logos: [insight-lab, bgu]
     - role: Research Intern
       org: Decart
       url: https://decart.ai
       kind: company
-      logos: [decart]
   # Official names, for structured data only.
+  # The logo row under the hero, in this order. Files in src/assets/logos/: <file>.png in colour,
+  # <file>-dark.png in white for dark mode.
+  logos:
+    - file: insight-lab
+      label: INSIGHT Lab
+      url: https://insight.bgu.ac.il/
+    - file: decart
+      label: Decart
+      url: https://decart.ai
+    - file: bgu
+      label: Ben-Gurion University of the Negev
+      url: https://www.bgu.ac.il/en/
   alumni_of:
     - Technion – Israel Institute of Technology
     - Sapienza University of Rome

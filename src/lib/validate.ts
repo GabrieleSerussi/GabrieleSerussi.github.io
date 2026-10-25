@@ -26,10 +26,8 @@ export function collectIssues({ profile, papers, news }: Input): Issue[] {
   todos('profile.yaml', profile);
   if (!headshot()) add('src/assets', 'add your headshot as headshot.jpg, a square photo');
   if (profile.cv && !hasPublicFile(profile.cv)) add('public', `add your CV at public${profile.cv}`);
-  for (const a of profile.affiliations) {
-    for (const logo of a.logos) {
-      if (!findLogo(logo).light) add('src/assets/logos', `add ${logo}.png for ${a.org}`);
-    }
+  for (const logo of profile.logos) {
+    if (!findLogo(logo.file).light) add('src/assets/logos', `add ${logo.file}.png for ${logo.label}`);
   }
   for (const t of profile.timeline) {
     if (t.logo && !findMark(t.logo)) add('src/assets/logos', `add ${t.logo}-mark.png for ${t.org}`);
