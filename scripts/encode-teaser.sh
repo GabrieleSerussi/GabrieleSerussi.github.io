@@ -1,16 +1,19 @@
 #!/usr/bin/env bash
 # Turns any video into a homepage teaser: a short silent loop plus a poster frame.
-#   scripts/encode-teaser.sh <input-video> <paper-id> [start-seconds] [duration-seconds]
+#   scripts/encode-teaser.sh <input-video> <paper-id> [start-seconds] [duration-seconds] [width]
 # Example: scripts/encode-teaser.sh ~/Downloads/herbench_demo.mp4 herbench 3 5
 # Writes public/media/<paper-id>/teaser.mp4, a WebM (AV1 if available, else VP9) and poster.jpg.
+# Width defaults to 640 px; lead papers on the homepage are shown larger, so use 960 for those.
 set -euo pipefail
 
-input="${1:?usage: encode-teaser.sh <input-video> <paper-id> [start] [duration]}"
-id="${2:?usage: encode-teaser.sh <input-video> <paper-id> [start] [duration]}"
+usage="usage: encode-teaser.sh <input-video> <paper-id> [start] [duration] [width]"
+input="${1:?$usage}"
+id="${2:?$usage}"
 start="${3:-0}"
 duration="${4:-5}"
+width="${5:-640}"
 out="public/media/${id}"
-filters="scale=640:-2:flags=lanczos,fps=24"
+filters="scale=${width}:-2:flags=lanczos,fps=24"
 
 command -v ffmpeg >/dev/null || { echo "ffmpeg is not installed" >&2; exit 1; }
 mkdir -p "$out"

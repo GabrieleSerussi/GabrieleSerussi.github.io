@@ -1,4 +1,6 @@
+# Search engines and AI assistants are welcome to read and cite everything here.
+# Staging builds carry noindex on every page until launch.
 User-agent: *
 Allow: /
 
-Sitemap: https://gabrieleserussi.com/sitemap-index.xml
+Sitemap: https://gabrieleserussi.github.io/sitemap-index.xml
