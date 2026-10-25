@@ -69,12 +69,12 @@ me:
   timeline:
     - org: Decart
       role: Research Intern, real-time video generation
-      when: May 2026 to present
+      when: 2026 to present
       url: https://decart.ai
       logo: decart
     - org: Ben-Gurion University of the Negev
       role: PhD, Electrical and Computer Engineering, INSIGHT Lab, advised by Prof. Chaim Baskin
-      when: Nov 2024 to present
+      when: 2024 to present
       url: https://www.bgu.ac.il/en/
       logo: bgu
     - org: Technion, Israel Institute of Technology
