@@ -30,7 +30,6 @@ enforce(issues);
 // Selected papers in file order: lead papers are highlights; all of them are listed.
 const selected = papers.filter((p) => p.data.selected);
 const highlights = selected.filter((p) => p.data.emphasis === 'lead');
-const onPage = new Set(selected.map((p) => p.id));
 
 const site = Astro.site ?? new URL(Astro.url.origin);
 const photo = headshot();
@@ -53,7 +52,7 @@ const me = Object.values(profile.links).filter((v): v is string => Boolean(clean
   <main id="main">
     <Hero profile={profile} />
     <Highlights papers={highlights} />
-    <Research research={profile.research} papers={papers} onPage={onPage} />
+    <Research research={profile.research} papers={papers} />
     <NewsList items={news} />
 
     <section class="section" id="publications" aria-labelledby="publications-title">

@@ -1,7 +1,7 @@
 ---
 import Teaser from './Teaser.astro';
 import { clean, track } from '../lib/site';
-import type { Paper } from '../lib/papers';
+import { paperPath, type Paper } from '../lib/papers';
 
 interface Props {
   papers: Paper[];
@@ -25,7 +25,7 @@ const { papers } = Astro.props;
               <Teaser id={p.id} title={d.title} alt={clean(d.teaser_alt)} sizes="(min-width: 64rem) 16rem, (min-width: 30rem) 46vw, 100vw" />
             </div>
             <span class="badge badge--overlay">{badge}</span>
-            <h3><a href={`#paper-${p.id}`} data-goatcounter-click={track('highlight', p.id)}>{clean(d.short) ?? d.title}</a></h3>
+            <h3><a href={paperPath(p.id)} data-goatcounter-click={track('highlight', p.id)}>{clean(d.short) ?? d.title}</a></h3>
             {clean(d.hook) && <p>{d.hook}</p>}
           </li>
         );

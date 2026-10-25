@@ -1,0 +1,196 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { getEntry } from 'astro:content';
+import { getImage } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import Teaser from '../../components/Teaser.astro';
+import Contact from '../../components/Contact.astro';
+import Footer from '../../components/Footer.astro';
+import { clean, track, xHandle } from '../../lib/site';
+import { findTeaser } from '../../lib/media';
+import { paperGraph } from '../../lib/seo';
+import {
+  badges,
+  formatAuthors,
+  getPapers,
+  hasEqualContribution,
+  paperLinks,
+  paperPath,
+  paperYear,
+  pdfUrl,
+  plainAuthor,
+  shortVenue,
+  type Paper,
+} from '../../lib/papers';
+
+// One page per paper: what most interests a reader first (the hook, the links, the figure),
+// then the result, the published abstract, the citation and the related work. Google Scholar
+// citation tags and a ScholarlyArticle graph make the page easy for search engines and agents.
+export const getStaticPaths = (async () => {
+  const papers = await getPapers();
+  return papers.map((paper) => ({ params: { id: paper.id }, props: { paper, papers } }));
+}) satisfies GetStaticPaths;
+
+interface Props {
+  paper: Paper;
+  papers: Paper[];
+}
+
+const { paper, papers } = Astro.props;
+const d = paper.data;
+const profileEntry = await getEntry('profile', 'me');
+if (!profileEntry) throw new Error('src/data/profile.yaml must start with a "me:" entry.');
+const profile = profileEntry.data;
+const site = Astro.site ?? new URL(Astro.url.origin);
+const page = new URL(paperPath(paper.id), site).href;
+
+const hook = clean(d.hook);
+const tldr = clean(d.tldr);
+const abstract = clean(d.abstract);
+const bibtex = clean(d.bibtex);
+const also = clean(d.also_presented);
+const links = paperLinks(d.links);
+const list = badges(d);
+const me = Object.values(profile.links).filter((v): v is string => Boolean(clean(v)));
+
+// Search snippet: the hook if it fits, else the start of the result sentence.
+const snippet = hook ?? tldr ?? d.title;
+const description = snippet.length <= 160 ? snippet : `${snippet.slice(0, 157).replace(/\s+\S*$/, '')}...`;
+
+// Preview image for shared links: the teaser figure, or the video's poster frame.
+const teaser = findTeaser(paper.id);
+let image: { url: string; width: number; height: number; alt: string } | undefined;
+if (teaser.kind === 'image') {
+  const img = await getImage({ src: teaser.image, width: 1200, format: 'jpeg' });
+  image = {
+    url: new URL(img.src, site).href,
+    width: Number(img.attributes.width),
+    height: Number(img.attributes.height),
+    alt: clean(d.teaser_alt) ?? `Figure from ${d.title}`,
+  };
+} else if (teaser.kind === 'video' && teaser.poster) {
+  image = { url: new URL(teaser.poster, site).href, width: 960, height: 540, alt: clean(d.teaser_alt) ?? `Still from ${d.title}` };
+}
+
+// Related work: the research pillar this paper belongs to, and its other papers.
+const pillar = profile.research.pillars.find((p) => p.papers.includes(paper.id));
+const related = (pillar?.papers ?? [])
+  .filter((id) => id !== paper.id)
+  .map((id) => papers.find((p) => p.id === id))
+  .filter((p): p is Paper => Boolean(p));
+
+// Google Scholar (Highwire Press) citation tags.
+const year = paperYear(d);
+const pdf = pdfUrl(d.links);
+const [firstPage, lastPage] = (clean(d.pages) ?? '').split('-');
+const doi = clean(d.links.paper)?.match(/doi\.org\/(.+)$/)?.[1];
+const venueFull = clean(d.venue_full);
+---
+<Base
+  title={`${d.title} | ${profile.name}`}
+  description={description}
+  name={profile.name}
+  jsonLd={paperGraph(paper, profile, site, image?.url)}
+  goatcounter={profile.goatcounter}
+  me={me}
+  twitter={xHandle(profile.links.x)}
+  current="publications"
+  image={image}
+  type="article"
+>
+  <Fragment slot="head">
+    <meta name="citation_title" content={d.title} />
+    {d.authors.map((a) => <meta name="citation_author" content={plainAuthor(a)} />)}
+    {year > 0 && <meta name="citation_publication_date" content={String(year)} />}
+    {venueFull && d.type !== 'preprint' && <meta name="citation_conference_title" content={venueFull} />}
+    {firstPage && <meta name="citation_firstpage" content={firstPage} />}
+    {lastPage && <meta name="citation_lastpage" content={lastPage} />}
+    {doi && <meta name="citation_doi" content={doi} />}
+    {pdf && <meta name="citation_pdf_url" content={pdf} />}
+    <meta name="citation_abstract_html_url" content={page} />
+  </Fragment>
+  <main id="main" class="paper-page">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="/">{profile.name}</a>
+      <span aria-hidden="true">/</span>
+      <a href="/publications/">Publications</a>
+    </nav>
+
+    <article>
+      <header class="paper-head">
+        <div class="badges">
+          {list.map((b) => (
+            <span class:list={['badge', { 'badge--accent': b.tone === 'accent', 'badge--quiet': b.tone === 'quiet' }]}>{b.label}</span>
+          ))}
+        </div>
+        <h1 class="paper-page-title">{d.title}</h1>
+        <p class="pub-authors" set:html={formatAuthors(d.authors, profile.name)}></p>
+        {also && <p class="pub-also">Also presented at {also}.</p>}
+        {hook && <p class="paper-lead">{hook}</p>}
+        {links.length > 0 && (
+          <ul class="pills">
+            {links.map((l, i) => (
+              <li><a class:list={['pill', { 'pill--solid': i === 0 }]} href={l.href} data-goatcounter-click={track('page', paper.id, l.label)}>{l.label}</a></li>
+            ))}
+          </ul>
+        )}
+      </header>
+
+      {teaser.kind !== 'none' && (
+        <figure class="media paper-figure">
+          <Teaser id={paper.id} title={d.title} alt={clean(d.teaser_alt)} sizes="(min-width: 68rem) 68rem, 100vw" />
+        </figure>
+      )}
+
+      {tldr && (
+        <section class="paper-section" aria-labelledby="result">
+          <h2 id="result">Key result</h2>
+          <p class="paper-result">{tldr}</p>
+        </section>
+      )}
+
+      {abstract && (
+        <section class="paper-section" aria-labelledby="abstract">
+          <h2 id="abstract">Abstract</h2>
+          <p class="paper-abstract">{abstract}</p>
+          {d.abstract_source && <p class="paper-note">Abstract as published on {d.abstract_source}.</p>}
+        </section>
+      )}
+
+      {bibtex && (
+        <section class="paper-section" aria-labelledby="cite">
+          <h2 id="cite">Cite</h2>
+          <pre class="paper-bibtex" data-goatcounter-click={track('page', paper.id, 'bibtex')}><code>{bibtex}</code></pre>
+        </section>
+      )}
+
+      {d.keywords.length > 0 && (
+        <section class="paper-section" aria-labelledby="topics">
+          <h2 id="topics">Topics</h2>
+          <ul class="chips">
+            {d.keywords.map((k) => (
+              <li><span class="chip">{k}</span></li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {related.length > 0 && pillar && (
+        <section class="paper-section" aria-labelledby="related">
+          <h2 id="related">Related research</h2>
+          <p class="paper-note">{pillar.title}: {pillar.text}</p>
+          <ul class="chips">
+            {related.map((p) => (
+              <li><a class="chip" href={paperPath(p.id)} data-goatcounter-click={track('related', paper.id, p.id)}><b>{clean(p.data.short) ?? p.data.title}</b><span>{shortVenue(p.data)}</span></a></li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {hasEqualContribution([paper]) && <p class="footnote">* Equal contribution.</p>}
+    </article>
+
+    <Contact profile={profile} />
+  </main>
+  <Footer profile={profile} />
+</Base>

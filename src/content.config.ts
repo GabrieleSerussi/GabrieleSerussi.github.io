@@ -29,6 +29,12 @@ const papers = defineCollection({
     // One impact badge, e.g. "11k+ dataset downloads". Keep the source and date in a comment.
     proof: z.string().optional(),
     tldr: z.string().optional(),
+    // The published abstract, shown on the paper's own page (/research/<id>/).
+    abstract: z.string().optional(),
+    abstract_source: z.enum(['CVF', 'OpenReview', 'arXiv', 'IEEE']).optional(),
+    // Full venue name and page range, for the Google Scholar citation tags.
+    venue_full: z.string().optional(),
+    pages: z.string().optional(),
     also_presented: z.string().optional(),
     year: z.number().int().optional(),
     links: z.record(z.string(), z.string()).default({}),

@@ -7,11 +7,11 @@
 
 - id: wacv-2027-himu
   date: 2026-10-14
-  text: "[HiMu](#paper-himu), a training-free frame selector for long videos, was accepted at WACV 2027."
+  text: "[HiMu](/research/himu/), a training-free frame selector for long videos, was accepted at WACV 2027."
 
 - id: vedje-arxiv
   date: 2026-10-08
-  text: "[VEDJE](#paper-vedje), a cached reranker for scalable video-text retrieval, was posted to arXiv."
+  text: "[VEDJE](/research/vedje/), a cached reranker for scalable video-text retrieval, was posted to arXiv."
 
 - id: icml-2026-vedje
   date: 2026-07-11
@@ -19,8 +19,8 @@
 
 - id: cvpr-2026-herbench
   date: 2026-06-05
-  text: "[HERBench](#paper-herbench) was presented at CVPR 2026 in Denver."
+  text: "[HERBench](/research/herbench/) was presented at CVPR 2026 in Denver."
 
 - id: sdb-arxiv
   date: 2026-05-03
-  text: "[Structured Diffusion Bridges](#paper-sdb), accepted at ICML 2026, was posted to arXiv."
+  text: "[Structured Diffusion Bridges](/research/sdb/), accepted at ICML 2026, was posted to arXiv."

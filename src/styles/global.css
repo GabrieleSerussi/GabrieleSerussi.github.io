@@ -866,3 +866,96 @@ a:hover {
     display: none;
   }
 }
+
+/* Paper pages (/research/<id>/): hook, links and figure first, then result, abstract and citation */
+.paper-page {
+  max-width: 52rem;
+}
+
+.crumbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1.75rem;
+  color: var(--ink-muted);
+  font-size: var(--fs-small);
+}
+
+.crumbs a {
+  color: var(--ink-muted);
+}
+
+.paper-head {
+  margin-top: 1.75rem;
+}
+
+.paper-page-title {
+  margin-top: 0.9rem;
+  font-size: clamp(1.75rem, 1.3rem + 1.6vw, 2.5rem);
+  font-weight: 560;
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+}
+
+.paper-head .pub-authors {
+  margin-top: 0.75rem;
+  font-size: 1rem;
+}
+
+.paper-lead {
+  margin-top: 1.25rem;
+  max-width: 40ch;
+  font-family: var(--display);
+  font-size: var(--fs-mission);
+  font-style: italic;
+  line-height: 1.3;
+}
+
+.paper-head .pills {
+  margin-top: 1.4rem;
+}
+
+.paper-figure {
+  margin-top: 2rem;
+  aspect-ratio: 16 / 9;
+}
+
+.paper-section {
+  margin-top: 2.75rem;
+}
+
+.paper-section h2 {
+  margin-bottom: 0.75rem;
+  font-size: var(--fs-h3);
+  font-weight: 560;
+}
+
+.paper-result {
+  max-width: 64ch;
+  font-size: 1.125rem;
+}
+
+.paper-abstract {
+  max-width: 68ch;
+}
+
+.paper-note {
+  margin-top: 0.6rem;
+  max-width: 68ch;
+  color: var(--ink-muted);
+  font-size: var(--fs-small);
+}
+
+.paper-section .chips {
+  margin-top: 0.75rem;
+}
+
+.paper-bibtex {
+  margin: 0;
+  padding: 0.85rem 1rem;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  font: 0.8rem/1.5 var(--mono);
+}

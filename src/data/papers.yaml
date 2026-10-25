@@ -25,6 +25,11 @@
   proof: "11k+ dataset downloads"
   tldr: "HERBench forces video models to aggregate evidence: each of its 26,806 questions needs at least three separate cues from distinct parts of the video, and 13 state-of-the-art Video-LLMs reach only 31 to 42% (random is 20%)."
   keywords: ["video question answering", "VideoQA benchmark", "multi-evidence reasoning", "long video understanding", "Video-LLMs", "frame selection"]
+  # The published abstract, verbatim apart from LaTeX markup (source: CVF).
+  abstract: "Video Large Language Models (Video-LLMs) are improving rapidly, yet current Video Question Answering (VideoQA) benchmarks often admit single-cue shortcuts, under-testing reasoning that must integrate evidence across time. We introduce HERBench, a benchmark designed to make multi-evidence integration unavoidable: each question requires at least three non-overlapping cues drawn from distinct video segments. HERBench contains 26,806 five-way multiple-choice questions across 12 compositional tasks. To make evidential demand measurable, we introduce the Minimum Required Frame-Set (MRFS), the smallest number of frames a model must fuse to answer correctly, and show that HERBench imposes higher evidential demand than prior benchmarks. Evaluating 13 state-of-the-art Video-LLMs yields only 31-42% accuracy, only modestly above the 20% random-guess baseline. We disentangle this failure into two critical bottlenecks: (1) a retrieval deficit, where frame selectors overlook key evidence, and (2) a fusion deficit, where models fail to integrate information even when all necessary evidence is provided. HERBench thus provides a principled benchmark for studying robust multi-evidence video understanding."
+  abstract_source: CVF
+  venue_full: "Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)"
+  pages: "4505-4514"
   teaser_alt: "Two shots from the Temporal Shot Ordering example in the HERBench project video, a spaceship in space and the Statue of Liberty at dawn or dusk, each captioned with the shot description the question lists."
   links:
     paper: "https://openaccess.thecvf.com/content/CVPR2026/papers/Ami_HERBench_A_Benchmark_for_Multi-Evidence_Integration_in_Video_Question_Answering_CVPR_2026_paper.pdf"
@@ -56,6 +61,10 @@
   hook: "Diffusion bridges that reach near fully paired quality with half the pairs and still learn with none."
   tldr: "Structured Diffusion Bridges reach near fully paired quality in modality translation with half the paired data, 25.2 PSNR against 25.6 for a fully paired baseline on zero-shot super-resolution, and still learn with no pairs at all."
   keywords: ["diffusion bridges", "modality translation", "unpaired learning", "semi-paired learning", "cycle consistency", "super-resolution", "multi-view to 3D"]
+  # The published abstract, verbatim apart from LaTeX markup (source: OpenReview).
+  abstract: "Modality translation is inherently under-constrained, as multiple cross-modal mappings may yield the same marginals. Recent work has shown that diffusion bridges are effective for this task. However, most existing approaches rely on fully paired datasets, thereby imposing a single data-driven constraint. We propose a diffusion-bridge framework that characterizes the space of admissible solutions and restricts it via alignment constraints, treating paired supervision as an optional heuristic rather than a prerequisite. We validate our method on synthetic and real modality translation benchmarks across unpaired, semi-paired, and paired regimes, showing consistent performance across supervision levels. Notably, it achieves near fully-paired quality with a substantial relaxation in pairing requirements, and remaining applicable in the unpaired regime. These results highlight diffusion bridges as a flexible foundation for modality translation beyond fully paired data."
+  abstract_source: OpenReview
+  venue_full: "Forty-third International Conference on Machine Learning (ICML)"
   teaser_alt: "Forward and reverse diffusion bridges between two modalities, with the marginal matching and cycle consistency constraints drawn over their trajectories."
   links:
     arxiv: "https://arxiv.org/abs/2605.02973"
@@ -84,6 +93,10 @@
   hook: "Picks 16 frames that beat 64 uniformly sampled ones on Video-MME, without any training."
   tldr: "With 16 frames chosen by HiMu, a training-free frame selector for long-video question answering, Qwen3-VL-8B scores 73.2% on Video-MME, above its 71.7% with 64 uniformly sampled frames."
   keywords: ["frame selection", "long video question answering", "multimodal large language models", "training-free", "neuro-symbolic reasoning", "audio-visual"]
+  # The published abstract, verbatim apart from LaTeX markup (source: arXiv).
+  abstract: "Long-form video question answering requires reasoning over extended temporal contexts, making frame selection a critical bottleneck for multi-modal large language models (MLLMs) bound by finite context windows. Within the controlled frame-budget regime that governs practical deployment, prior selectors score frames against a single global query embedding; as a result, compositional multimodal questions that involve temporal ordering or cross-modal cues such as “what happens on screen right after the narrator mentions the reaction?” are flattened into a representation that loses sub-event ordering and modality bindings. We introduce HiMu, a training-free framework for compositional multimodal frame selection. A single text-only LLM call decomposes the query into a hierarchical logic tree whose leaves are atomic predicates, each routed to a lightweight expert spanning vision (CLIP, open-vocabulary detection, OCR) and audio (speech recognition and non-speech sound matching). Expert signals are normalized, smoothed to align across modalities, and composed bottom-up through fuzzy-logic operators that enforce temporal sequencing and adjacency, yielding a continuous per-frame satisfaction curve. Under the standard 16-frame budget on Video-MME, LongVideoBench, and HERBench-Lite, HiMu achieves state-of-the-art accuracy among frame selection methods and improves over uniform sampling across seven diverse MLLMs as a drop-in module, matching the accuracy of uniform sampling at 4× its frame budget, without retraining and without multiple iterative MLLM calls during selection."
+  abstract_source: arXiv
+  venue_full: "IEEE/CVF Winter Conference on Applications of Computer Vision (WACV)"
   teaser_alt: "Score curves from several experts over a basketball broadcast, combined into one satisfaction curve that picks four frames."
   links:
     arxiv: "https://arxiv.org/abs/2603.18558"
@@ -115,6 +128,11 @@
   hook: "A drone that localizes itself by listening to its own rotor noise, which it learns to shape."
   tldr: "Learning a drone's rotor phases together with a neural localizer lets it localize itself from its own propulsion noise, more than 2.7 times better in simulation than the best handcrafted modulation."
   keywords: ["drone localization", "acoustic localization", "multi-rotor aircraft", "propulsion noise", "rotor phase modulation", "robotics"]
+  # The published abstract, verbatim apart from LaTeX markup (source: arXiv).
+  abstract: "Multi-rotor aerial autonomous vehicles (MAVs) primarily rely on vision for navigation purposes. However, visual localization and odometry techniques suffer from poor performance in low or direct sunlight, a limited field of view, and vulnerability to occlusions. Acoustic sensing can serve as a complementary or even alternative modality for vision in many situations, and it also has the added benefits of lower system cost and energy footprint, which is especially important for micro aircraft. This paper proposes actively controlling and shaping the aircraft propulsion noise generated by the rotors to benefit localization tasks, rather than considering it a harmful nuisance. We present a neural network architecture for selfnoise-based localization in a known environment. We show that training it simultaneously with learning time-varying rotor phase modulation achieves accurate and robust localization. The proposed methods are evaluated using a computationally affordable simulation of MAV rotor noise in 2D acoustic environments that is fitted to real recordings of rotor pressure fields."
+  abstract_source: arXiv
+  venue_full: "2024 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)"
+  pages: "472-479"
   teaser_alt: "Simulated sound pressure around a four-rotor drone in a square room, with positive pressure in red and negative in blue."
   links:
     paper: "https://doi.org/10.1109/IROS58592.2024.10802115"
@@ -146,8 +164,13 @@
   emphasis: standard
   # Table 1: VEDJE 59.8 T2V R@1 on MSR-VTT with about 157M online parameters (Figure 1); LamRA, the
   # VideoChat-Flash-7B reproduction with a 7.6B base decoder, 59.7. 7.6B / 157M is about 48.
+  hook: "Matches a 7.6B-parameter multimodal LLM retriever on MSR-VTT with about 157M online parameters."
   tldr: "VEDJE matches a 7.6B-parameter multimodal LLM retriever on MSR-VTT text-to-video retrieval (59.8 against 59.7 R@1) with about 157M online parameters, roughly 48 times fewer, by encoding each video once into a compact cache read by a 33M-parameter reranker."
   keywords: ["video-text retrieval", "reranking", "cross-encoder", "video caching", "efficient retrieval", "MSR-VTT"]
+  # The published abstract, verbatim apart from LaTeX markup (source: arXiv).
+  abstract: "Finding the right video often requires distinguishing similar scenes in which different events occur. Joint matching improves retrieval, but processing rich video representations for each query is costly. VEDJE compresses features within sampled frames while keeping their representations separate in a reusable cache. Feature-change prediction supplies an auxiliary training signal that improves retrieval from the compressed cache without adding work at query time. On MSR-VTT, MSVD, DiDeMo, and ActivityNet, VEDJE improves R@1 over matched first-stage retrievers in both retrieval directions. On MSR-VTT, it reaches 59.8 text-to-video R@1 with a fine-tuned VideoCLIP-XL first stage. In the VideoPrism configuration, shrinking the per-video cache fourfold to 12 KiB preserves text-to-video recall within 0.2 points. These results show that accurate video search can operate on compact evidence, encoded once and reused as new queries arrive."
+  abstract_source: arXiv
+  venue_full: "AdaptFM: Resource-Adaptive Foundation Model Inference, ICML 2026 Workshop"
   teaser_alt: "Plot of MSR-VTT text-to-video R@1 against online model parameters, with VEDJE marked at 59.8 and about 157M parameters among published systems from 63M to 7.6B."
   links:
     arxiv: "https://arxiv.org/abs/2610.11850"
@@ -178,6 +201,10 @@
   # Table 1: 99.73 R@1 against 72.5 for UNITE instruct 7B, the previous best on WebVid-CoVR.
   tldr: "PREGEN reaches 99.73 Recall@1 on WebVid-CoVR, 27.23 points above the previous best, by reading a frozen VLM's hidden states with a lightweight encoder for composed video retrieval."
   keywords: ["composed video retrieval", "vision-language models", "frozen VLM", "hidden states", "WebVid-CoVR"]
+  teaser_alt: "PREGEN pipeline: video and text tokens pass through a frozen LLM, and the final-token hidden state of every layer is pooled by a small encoder into one embedding."
+  # The published abstract, verbatim apart from LaTeX markup (source: arXiv).
+  abstract: "Composed Video Retrieval (CoVR) aims to retrieve a video based on a query video and a modifying text. Current CoVR methods fail to fully exploit modern Vision-Language Models (VLMs), either using outdated architectures or requiring computationally expensive fine-tuning and slow caption generation. We introduce PREGEN (PRE GENeration extraction), an efficient and powerful CoVR framework that overcomes these limitations. Our approach uniquely pairs a frozen, pre-trained VLM with a lightweight encoding model, eliminating the need for any VLM fine-tuning. We feed the query video and modifying text into the VLM and extract the hidden state of the final token from each layer. A simple encoder is then trained on these pooled representations, creating a semantically rich and compact embedding for retrieval. PREGEN significantly advances the state of the art, surpassing all prior methods on standard CoVR benchmarks with substantial gains in Recall@1 of +27.23 and +69.59. Our method demonstrates robustness across different VLM backbones and exhibits strong zero-shot generalization to more complex textual modifications, highlighting its effectiveness and semantic capabilities."
+  abstract_source: arXiv
   links:
     arxiv: "https://arxiv.org/abs/2601.13797"
   bibtex: |-

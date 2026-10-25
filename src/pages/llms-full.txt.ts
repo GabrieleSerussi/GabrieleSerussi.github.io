@@ -1,7 +1,7 @@
 import type { APIRoute } from 'astro';
 import { getCollection, getEntry } from 'astro:content';
 import { PROFILE_LINKS, clean, stripMd } from '../lib/site';
-import { getPapers, paperLinks, venueLine } from '../lib/papers';
+import { getPapers, paperLinks, paperPath, venueLine } from '../lib/papers';
 import { profileProse, timelineLines } from '../lib/profileText';
 
 // Everything on the site as one plain-text file for AI assistants: the profile, every paper
@@ -24,9 +24,11 @@ export const GET: APIRoute = async ({ site }) => {
       `### ${d.title}`,
       '',
       `Authors: ${d.authors.join(', ')}`,
+      `Page: ${new URL(paperPath(p.id), base).href}`,
       `Venue: ${venueLine(d)}`,
       ...(tldr ? [`Result: ${tldr}`] : []),
       ...(d.keywords.length > 0 ? [`Keywords: ${d.keywords.join(', ')}`] : []),
+      ...(clean(d.abstract) ? ['', `Abstract: ${d.abstract}`] : []),
       '',
       ...links,
       ...(bibtex ? ['', '```bibtex', bibtex, '```'] : []),

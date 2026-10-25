@@ -3,7 +3,7 @@ import type { CollectionEntry } from 'astro:content';
 import Teaser from './Teaser.astro';
 import { clean, track } from '../lib/site';
 import { findTeaser } from '../lib/media';
-import { badges, formatAuthors, paperLinks, primaryLink } from '../lib/papers';
+import { badges, formatAuthors, paperLinks, paperPath } from '../lib/papers';
 
 interface Props {
   paper: CollectionEntry<'papers'>;
@@ -17,7 +17,6 @@ interface Props {
 const { paper, me, showTldr = true } = Astro.props;
 const d = paper.data;
 const brief = Astro.props.brief ?? findTeaser(paper.id).kind === 'none';
-const titleHref = primaryLink(d.links);
 const links = paperLinks(d.links);
 const tldr = clean(d.tldr);
 const bibtex = clean(d.bibtex);
@@ -39,7 +38,7 @@ const list = badges(d);
     </div>
   )}
   <div>
-    <h3 class="pub-title">{titleHref ? <a href={titleHref} data-goatcounter-click={track('paper', paper.id, 'title')}>{d.title}</a> : d.title}</h3>
+    <h3 class="pub-title"><a href={paperPath(paper.id)} data-goatcounter-click={track('paper', paper.id, 'title')}>{d.title}</a></h3>
     <p class="pub-authors" set:html={formatAuthors(d.authors, me)}></p>
     {!brief && (
       <div class="badges">

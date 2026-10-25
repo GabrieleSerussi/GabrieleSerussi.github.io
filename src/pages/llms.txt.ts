@@ -1,7 +1,7 @@
 import type { APIRoute } from 'astro';
 import { getEntry } from 'astro:content';
 import { PROFILE_LINKS, clean } from '../lib/site';
-import { getPapers, primaryLink, venueLine } from '../lib/papers';
+import { getPapers, paperPath, venueLine } from '../lib/papers';
 import { profileProse, timelineLines } from '../lib/profileText';
 
 // A plain-text summary for AI assistants and crawlers (llmstxt.org format). It leads with the
@@ -14,7 +14,7 @@ export const GET: APIRoute = async ({ site }) => {
   const selected = papers.filter((p) => p.data.selected);
 
   const research = selected.map((p) => {
-    const href = primaryLink(p.data.links) ?? new URL(`/#paper-${p.id}`, base).href;
+    const href = new URL(paperPath(p.id), base).href;
     const tldr = clean(p.data.tldr);
     return `- [${p.data.title}](${href}): ${venueLine(p.data)}${tldr ? ` ${tldr}` : ''}`;
   });

@@ -32,7 +32,7 @@ The first command also writes `package-lock.json`. Commit it: the deploy action 
 | `src/data/papers.yaml` | Every paper; `selected: true` puts it on the homepage, in file order. `emphasis: lead` papers are also highlight cards (they need a `hook` and a teaser), `standard` papers are full rows with a teaser, `brief` papers are one row. `keywords` feed search engines and AI assistants. `proof` adds an impact badge |
 | `src/data/news.yaml` | Dated news; items older than 180 days disappear on their own |
 
-Text fields accept `[label](url)` links, and `#paper-<id>` jumps to a paper on the homepage.
+Text fields accept `[label](url)` links, and `/research/<id>/` links to a paper's own page.
 Anything containing the word `TODO` shows up in the staging panel and blocks production builds.
 The `note` field on a paper is never shown on the site, but the repo is public, so keep it factual.
 
@@ -59,6 +59,10 @@ available, otherwise VP9) and a poster frame. Long videos belong on YouTube or H
 not in this repo: git keeps every version forever.
 
 ## Search engines and AI assistants
+
+Each paper has its own page at `/research/<id>/`, generated from papers.yaml, with the published
+abstract, BibTeX and Google Scholar citation tags. Adding a paper with an `abstract` creates its
+page automatically.
 
 The homepage carries a schema.org graph (the person, the page, the site and every paper),
 `rel="me"` links to every profile, and a link preview image. `/llms.txt` is a short summary

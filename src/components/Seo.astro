@@ -8,12 +8,18 @@ interface Props {
   jsonLd?: Record<string, unknown>;
   noindex?: boolean;
   twitter?: string;
+  /** A page-specific preview image (absolute URL); defaults to public/og.png. */
+  image?: { url: string; width: number; height: number; alt: string };
+  type?: 'profile' | 'article';
 }
 
-const { title, description, author, jsonLd, noindex = false, twitter } = Astro.props;
+const { title, description, author, jsonLd, noindex = false, twitter, image, type = 'profile' } = Astro.props;
 const site = Astro.site ?? new URL(Astro.url.origin);
 const canonical = new URL(Astro.url.pathname, site).href;
-const ogImage = hasPublicFile('og.png') ? new URL('/og.png', site).href : undefined;
+const fallback = hasPublicFile('og.png')
+  ? { url: new URL('/og.png', site).href, width: 1200, height: 630, alt: `${author}: ${description}` }
+  : undefined;
+const og = image ?? fallback;
 const ld = jsonLd ? JSON.stringify(jsonLd).replace(/</g, '\\u003c') : undefined;
 ---
 <title>{title}</title>
@@ -21,17 +27,17 @@ const ld = jsonLd ? JSON.stringify(jsonLd).replace(/</g, '\\u003c') : undefined;
 <meta name="author" content={author} />
 <link rel="canonical" href={canonical} />
 {noindex ? <meta name="robots" content="noindex, nofollow" /> : <meta name="robots" content="index, follow, max-image-preview:large" />}
-<meta property="og:type" content="profile" />
+<meta property="og:type" content={type} />
 <meta property="og:site_name" content={author} />
 <meta property="og:locale" content="en_US" />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:url" content={canonical} />
-{ogImage && <meta property="og:image" content={ogImage} />}
-{ogImage && <meta property="og:image:width" content="1200" />}
-{ogImage && <meta property="og:image:height" content="630" />}
-{ogImage && <meta property="og:image:alt" content={`${author}: ${description}`} />}
-<meta name="twitter:card" content={ogImage ? 'summary_large_image' : 'summary'} />
+{og && <meta property="og:image" content={og.url} />}
+{og && <meta property="og:image:width" content={String(og.width)} />}
+{og && <meta property="og:image:height" content={String(og.height)} />}
+{og && <meta property="og:image:alt" content={og.alt} />}
+<meta name="twitter:card" content={og ? 'summary_large_image' : 'summary'} />
 {twitter && <meta name="twitter:creator" content={twitter} />}
 {twitter && <meta name="twitter:site" content={twitter} />}
 {ld && <script type="application/ld+json" set:html={ld}></script>}

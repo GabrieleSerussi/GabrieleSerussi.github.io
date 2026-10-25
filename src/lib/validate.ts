@@ -46,6 +46,7 @@ export function collectIssues({ profile, papers, news }: Input): Issue[] {
     if (findTodos(d.authors).length === 0 && !isAuthor(d.authors, profile.name)) {
       add(where, `the author list doesn't include ${profile.name}`);
     }
+    if (!d.abstract) add(where, `add the published abstract for its page at /research/${paper.id}/`);
     if (d.selected) {
       if (!d.tldr) add(where, 'selected papers need a one-sentence tldr');
       if (d.emphasis === 'lead' && !d.hook) add(where, 'lead papers need a one-line hook for their highlight card');

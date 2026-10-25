@@ -56,7 +56,21 @@ export function paperLinks(links: Record<string, string>): { label: string; href
     .map(([key, href]) => ({ label: LINK_LABELS[key] ?? key.charAt(0).toUpperCase() + key.slice(1), href }));
 }
 
-/** Where the paper title points: the project page if there is one, then the paper. */
+/** The paper's own page on this site. */
+export const paperPath = (id: string): string => `/research/${id}/`;
+
+/** A direct PDF link for citation tags: the published PDF if linked, else the arXiv PDF. */
+export function pdfUrl(links: Record<string, string>): string | undefined {
+  const paper = clean(links.paper);
+  if (paper?.endsWith('.pdf')) return paper;
+  const arxiv = clean(links.arxiv)?.match(/arxiv\.org\/abs\/([^\s?#]+)/)?.[1];
+  return arxiv ? `https://arxiv.org/pdf/${arxiv}` : undefined;
+}
+
+/** Author name without equal-contribution marks. */
+export const plainAuthor = (author: string): string => author.replace(MARKS, '').trim();
+
+/** Where an external citation points: the project page if there is one, then the paper. */
 export function primaryLink(links: Record<string, string>): string | undefined {
   for (const key of ['project', 'paper', 'arxiv', 'openreview']) {
     const href = clean(links[key]);

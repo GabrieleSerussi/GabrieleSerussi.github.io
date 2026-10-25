@@ -23,9 +23,11 @@ interface Props {
   current?: 'home' | 'publications';
   /** Search Console and Bing Webmaster ownership codes; only the homepage needs them. */
   verification?: { google?: string; bing?: string };
+  image?: { url: string; width: number; height: number; alt: string };
+  type?: 'profile' | 'article';
 }
 
-const { title, description, name, jsonLd, goatcounter, noindex = false, me = [], twitter, current, verification } = Astro.props;
+const { title, description, name, jsonLd, goatcounter, noindex = false, me = [], twitter, current, verification, image, type } = Astro.props;
 // Analytics only count real visitors: production builds with a GoatCounter code.
 const counter = IS_PRODUCTION && goatcounter ? `https://${goatcounter}.goatcounter.com/count` : undefined;
 const nav = [
@@ -43,7 +45,8 @@ const nav = [
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="preload" href={displayFont} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={textFont} as="font" type="font/woff2" crossorigin />
-    <Seo title={title} description={description} jsonLd={jsonLd} noindex={noindex || !IS_PRODUCTION} author={name} twitter={twitter} />
+    <Seo title={title} description={description} jsonLd={jsonLd} noindex={noindex || !IS_PRODUCTION} author={name} twitter={twitter} image={image} type={type} />
+    <slot name="head" />
     {verification?.google && <meta name="google-site-verification" content={verification.google} />}
     {verification?.bing && <meta name="msvalidate.01" content={verification.bing} />}
     <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
