@@ -5,6 +5,9 @@ import { paperPath, paperYear, plainAuthor, type Paper } from './papers';
 type Profile = CollectionEntry<'profile'>['data'];
 type Affiliation = Profile['affiliations'][number];
 
+const topic = (t: Profile['knows_about'][number]) =>
+  typeof t === 'string' ? t : { '@type': 'Thing', name: t.name, sameAs: t.wikipedia };
+
 const organization = (a: Affiliation, type: string) => ({
   '@type': type,
   name: a.org_formal ?? a.org,
@@ -13,18 +16,20 @@ const organization = (a: Affiliation, type: string) => ({
 });
 
 /**
- * schema.org graph for the homepage: the person, the page about them, the site and every paper.
- * Search engines use it for the knowledge panel; AI assistants use it to tie the name, the
- * affiliations, the profiles and the papers together.
+ * The person, with everything an assistant needs to answer "who works on X": the roles, the
+ * research group, the topics (tied to Wikipedia), the ORCID iD and the profiles.
+ * Shared by the homepage and /bio/, so both describe the same entity (#person).
  */
-export function profileGraph(profile: Profile, papers: Paper[], site: URL, image?: string, updated?: Date) {
+export function personNode(profile: Profile, site: URL, image?: string) {
   const personId = new URL('#person', site).href;
   const universities = profile.affiliations.filter((a) => a.kind === 'university');
   const company = profile.affiliations.find((a) => a.kind === 'company');
+  const labs = universities.filter((a) => clean(a.lab));
   const alumni = [profile.alumni_of ?? []].flat().filter((name) => clean(name));
+  const orcid = clean(profile.links.orcid)?.match(/orcid\.org\/([\dX-]+)/)?.[1];
   const [givenName, ...rest] = profile.name.split(' ');
 
-  const person = {
+  return {
     '@type': 'Person',
     '@id': personId,
     name: profile.name,
@@ -35,11 +40,33 @@ export function profileGraph(profile: Profile, papers: Paper[], site: URL, image
     ...(image ? { image } : {}),
     ...(company ? { jobTitle: company.role, worksFor: organization(company, 'Organization') } : {}),
     ...(universities.length > 0 ? { affiliation: universities.map((a) => organization(a, 'CollegeOrUniversity')) } : {}),
+    ...(labs.length > 0
+      ? {
+          memberOf: labs.map((a) => ({
+            '@type': 'ResearchOrganization',
+            name: a.lab,
+            ...(clean(a.url) ? { url: a.url } : {}),
+            parentOrganization: { '@type': 'CollegeOrUniversity', name: a.org_formal ?? a.org },
+          })),
+        }
+      : {}),
+    ...(profile.occupation ? { hasOccupation: { '@type': 'Occupation', name: profile.occupation } } : {}),
     ...(alumni.length > 0 ? { alumniOf: alumni.map((name) => ({ '@type': 'CollegeOrUniversity', name })) } : {}),
-    ...(profile.knows_about.length > 0 ? { knowsAbout: profile.knows_about } : {}),
+    ...(profile.knows_about.length > 0 ? { knowsAbout: profile.knows_about.map(topic) } : {}),
     ...(profile.grants.length > 0 ? { award: profile.grants.map((g) => `${g.title}, ${g.funder} research grant (${g.when})`) } : {}),
+    ...(orcid ? { identifier: { '@type': 'PropertyValue', propertyID: 'ORCID', value: orcid } } : {}),
     sameAs: Object.values(profile.links).filter((v) => clean(v)),
   };
+}
+
+/**
+ * schema.org graph for the homepage: the person, the page about them, the site and every paper.
+ * Search engines use it for the knowledge panel; AI assistants use it to tie the name, the
+ * affiliations, the profiles and the papers together.
+ */
+export function profileGraph(profile: Profile, papers: Paper[], site: URL, image?: string, updated?: Date) {
+  const personId = new URL('#person', site).href;
+  const person = personNode(profile, site, image);
 
   const articles = papers.map((p) => articleNode(p, profile, site));
 
@@ -114,6 +141,27 @@ export function paperGraph(p: Paper, profile: Profile, site: URL, image?: string
       },
       { '@type': 'WebSite', '@id': new URL('#website', site).href, url: site.href, name: profile.name, inLanguage: 'en' },
       articleNode(p, profile, site, image),
+    ],
+  };
+}
+
+/** schema.org graph for /bio/: an AboutPage whose main entity is the same person as the homepage. */
+export function bioGraph(profile: Profile, site: URL, image?: string) {
+  const page = new URL('/bio/', site).href;
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'AboutPage',
+        '@id': page,
+        url: page,
+        name: `Bio of ${profile.name}`,
+        isPartOf: { '@id': new URL('#website', site).href },
+        mainEntity: { '@id': new URL('#person', site).href },
+        ...(profile.bio ? { description: profile.bio.short } : {}),
+      },
+      { '@type': 'WebSite', '@id': new URL('#website', site).href, url: site.href, name: profile.name, inLanguage: 'en' },
+      personNode(profile, site, image),
     ],
   };
 }

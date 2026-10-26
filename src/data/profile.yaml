@@ -3,7 +3,7 @@
 me:
   name: Gabriele Serussi
   # The <title> of the homepage and the first line of link previews. Keep it under 60 characters.
-  site_title: Gabriele Serussi | Efficient world models and video AI
+  site_title: Gabriele Serussi | World models and video AI researcher
   # The mission line under your name.
   tagline: I build world models that spend only the compute they need.
   # One line of credentials under the mission. Advisors are the only personal names on the site
@@ -16,13 +16,14 @@ me:
     Sapienza University of Rome.
   # Search results and link previews show this. Keep it under 160 characters.
   description: >-
-    Gabriele Serussi is a PhD researcher at Ben-Gurion University's INSIGHT Lab and a Research
-    Intern at Decart, working on efficient world models and video AI.
+    Gabriele Serussi is an AI researcher working on efficient world models and video AI, at
+    Ben-Gurion University's INSIGHT Lab and at Decart.
   affiliations:
     - role: PhD student
       org: INSIGHT Lab, Ben-Gurion University
       org_formal: Ben-Gurion University of the Negev
       url: https://insight.bgu.ac.il/
+      lab: INSIGHT Lab
       kind: university
     - role: Research Intern
       org: Decart
@@ -45,6 +46,21 @@ me:
     - Technion – Israel Institute of Technology
     - Sapienza University of Rome
   advisor: Chaim Baskin
+  occupation: AI researcher
+  # Third person, for talk introductions and for AI assistants to quote. He/him (Gabriele,
+  # 2026-10-26). Don't say where he is based (his choice); naming Israel's ministry for the grant
+  # is fine. Every fact is on the site with its source.
+  bio:
+    short: >-
+      Gabriele Serussi is an AI researcher working on efficient world models and video AI. He is a
+      PhD student at Ben-Gurion University of the Negev, advised by Prof. Chaim Baskin in the
+      INSIGHT Lab, and a Research Intern at Decart, where he works on real-time video generation.
+    long: |-
+      Gabriele Serussi is an AI researcher working on efficient world models: models that understand video, generate it and act on it while spending only the compute they need. He is a PhD student in Electrical and Computer Engineering at Ben-Gurion University of the Negev, advised by Prof. Chaim Baskin in the INSIGHT Lab, and a Research Intern at Decart, where he works on real-time video generation. Before that, he was a Research Intern at the Bosch Center for Artificial Intelligence, working on video retrieval and on fusing vision with radar.
+
+      His research covers long-video understanding, generative world models and robotics. It includes HERBench (CVPR 2026), a video question answering benchmark in which every question needs at least three separate cues from the video, with more than 11,000 dataset downloads; Structured Diffusion Bridges (ICML 2026), which translate between modalities with less paired data; HiMu (WACV 2027), a training-free frame selector for long videos; VEDJE, a cached reranker for scalable video-text retrieval presented at an ICML 2026 workshop; and a drone that localizes itself from its own rotor noise (IROS 2024, oral pitch). He also co-wrote a research grant on the adversarial evaluation of generative AI, funded by Israel's Ministry of Innovation, Science and Technology.
+
+      He holds an MSc in Computer Science from the Technion, advised by Prof. Alex Bronstein and Prof. Chaim Baskin, and a BSc in Computer Engineering from Sapienza University of Rome.
 
   # The research section: one lede, three pillars with the papers that back them, one thread.
   research:
@@ -109,7 +125,7 @@ me:
       url: https://www.bgu.ac.il/en/
       logo: bgu
     - org: Technion, Israel Institute of Technology
-      role: MSc, Computer Science, advised by Prof. Alex Bronstein
+      role: MSc, Computer Science, advised by Prof. Alex Bronstein and Prof. Chaim Baskin
       when: 2021 to 2024
       url: https://www.technion.ac.il/en/
       logo: technion
@@ -149,16 +165,31 @@ me:
     semantic_scholar: https://www.semanticscholar.org/author/2288184194
     huggingface: https://huggingface.co/GSerussi
   # Given to search engines and AI assistants as the topics you know about.
+  # Wikipedia pages tell search engines and assistants which sense of each topic is meant.
   knows_about:
-    - World models
+    - name: World models
+      wikipedia: https://en.wikipedia.org/wiki/World_model_(artificial_intelligence)
     - Video generation
     - Video understanding
-    - Generative modeling
-    - Robotics
+    - name: Diffusion models
+      wikipedia: https://en.wikipedia.org/wiki/Diffusion_model
+    - name: Vision-language models
+      wikipedia: https://en.wikipedia.org/wiki/Vision-language_model
+    - Video retrieval
+    - name: Generative modeling
+      wikipedia: https://en.wikipedia.org/wiki/Generative_model
+    - name: Computer vision
+      wikipedia: https://en.wikipedia.org/wiki/Computer_vision
+    - name: Machine learning
+      wikipedia: https://en.wikipedia.org/wiki/Machine_learning
+    - name: Robotics
+      wikipedia: https://en.wikipedia.org/wiki/Robotics
     - Efficient deep learning
-    - Representation learning
+    - name: Representation learning
+      wikipedia: https://en.wikipedia.org/wiki/Representation_learning
     - Hardware-aware optimization
-    - Multimodal fusion
+    - name: Multimodal fusion
+      wikipedia: https://en.wikipedia.org/wiki/Multimodal_learning
   # Private analytics: your GoatCounter site code (the "xyz" in xyz.goatcounter.com). Only you can
   # see the dashboard. Counting runs on production builds only.
   # Ownership checks for Google Search Console and Bing Webmaster Tools (homepage meta tags).

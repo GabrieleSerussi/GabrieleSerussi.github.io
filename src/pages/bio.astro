@@ -1,0 +1,54 @@
+---
+import { getEntry } from 'astro:content';
+import { getImage } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Contact from '../components/Contact.astro';
+import Footer from '../components/Footer.astro';
+import { clean, xHandle } from '../lib/site';
+import { headshot } from '../lib/media';
+import { bioGraph } from '../lib/seo';
+
+// Third-person bios for talk introductions, programs and press. They are also the text an AI
+// assistant can quote as is, so they name the person, the topics and the place in full.
+const profileEntry = await getEntry('profile', 'me');
+if (!profileEntry) throw new Error('src/data/profile.yaml must start with a "me:" entry.');
+const profile = profileEntry.data;
+const bio = profile.bio;
+if (!bio) throw new Error('src/data/profile.yaml needs a "bio" with "short" and "long" to build /bio/.');
+
+const site = Astro.site ?? new URL(Astro.url.origin);
+const photo = headshot();
+const photoUrl = photo ? new URL((await getImage({ src: photo, width: 400 })).src, site).href : undefined;
+const me = Object.values(profile.links).filter((v): v is string => Boolean(clean(v)));
+const paragraphs = bio.long.split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean);
+---
+<Base
+  title={`Bio | ${profile.name}`}
+  description={bio.short.length <= 160 ? bio.short : `${bio.short.slice(0, 157).replace(/\s+\S*$/, '')}...`}
+  name={profile.name}
+  jsonLd={bioGraph(profile, site, photoUrl)}
+  goatcounter={profile.goatcounter}
+  me={me}
+  twitter={xHandle(profile.links.x)}
+>
+  <main id="main" class="paper-page">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="/">{profile.name}</a>
+    </nav>
+    <h1 class="paper-page-title">Bio</h1>
+    <p class="paper-note">For talk introductions, programs and press. Use either version as it is.</p>
+
+    <section class="paper-section" aria-labelledby="short-bio">
+      <h2 id="short-bio">Short bio</h2>
+      <p class="paper-abstract">{bio.short}</p>
+    </section>
+
+    <section class="paper-section" aria-labelledby="long-bio">
+      <h2 id="long-bio">Long bio</h2>
+      {paragraphs.map((p) => <p class="paper-abstract">{p}</p>)}
+    </section>
+
+    <Contact profile={profile} />
+  </main>
+  <Footer profile={profile} />
+</Base>

@@ -1006,6 +1006,10 @@ a:hover {
   max-width: 68ch;
 }
 
+.paper-abstract + .paper-abstract {
+  margin-top: 0.9em;
+}
+
 .paper-note {
   margin-top: 0.6rem;
   max-width: 68ch;

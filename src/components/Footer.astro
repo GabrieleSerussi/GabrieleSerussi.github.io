@@ -14,7 +14,7 @@ const updated = lastUpdated();
 const day = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
 ---
 <footer class="site-footer">
-  <p>{profile.name}. Last updated <time datetime={updated.toISOString().slice(0, 10)}>{day.format(updated)}</time>.</p>
+  <p>{profile.name}. Last updated <time datetime={updated.toISOString().slice(0, 10)}>{day.format(updated)}</time>.{profile.bio && <> <a href="/bio/" data-goatcounter-click={track('footer', 'Bio')}>Bio</a>.</>}</p>
   <ul aria-label="Profiles">
     {links.map((l) => (
       <li><a href={l.href} rel="me" data-goatcounter-click={track('footer', l.label)}>{l.label}</a></li>

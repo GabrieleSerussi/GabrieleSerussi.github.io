@@ -39,3 +39,23 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5
+
+  indexnow:
+    # After a production deploy, tell IndexNow (Bing, which ChatGPT search and Copilot use, plus
+    # Yandex, Seznam and Naver) that every page in the sitemap may have changed. The key file is
+    # public/b7c1e068eff044305c294cdec2d63961.txt; IndexNow keys are public by design.
+    if: github.event_name != 'schedule' && vars.SITE_STAGE == 'production'
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Notify IndexNow
+        env:
+          SITE: https://gabrieleserussi.github.io
+          KEY: b7c1e068eff044305c294cdec2d63961
+        run: |
+          sleep 30
+          curl -fsSL "$SITE/sitemap-0.xml" | grep -o '<loc>[^<]*' | sed 's/<loc>//' > urls.txt
+          python3 -c 'import json, os; urls = open("urls.txt").read().split(); site = os.environ["SITE"]; print(json.dumps({"host": site.split("//")[1], "key": os.environ["KEY"], "keyLocation": site + "/" + os.environ["KEY"] + ".txt", "urlList": urls}))' > body.json
+          code=$(curl -s -o response.txt -w '%{http_code}' -X POST https://api.indexnow.org/indexnow -H 'Content-Type: application/json; charset=utf-8' --data @body.json)
+          echo "IndexNow answered $code for $(wc -l < urls.txt) URLs"; cat response.txt
+          case "$code" in 200|202) ;; *) exit 1 ;; esac

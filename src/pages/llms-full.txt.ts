@@ -2,7 +2,7 @@ import type { APIRoute } from 'astro';
 import { getCollection, getEntry } from 'astro:content';
 import { PROFILE_LINKS, clean, stripMd } from '../lib/site';
 import { getPapers, paperLinks, paperPath, venueLine } from '../lib/papers';
-import { grantLines, profileProse, timelineLines } from '../lib/profileText';
+import { grantLines, profileProse, quickFacts, timelineLines, topicName } from '../lib/profileText';
 
 // Everything on the site as one plain-text file for AI assistants: the profile, every paper
 // with its authors, venue, result, links and BibTeX, and the recent news.
@@ -44,7 +44,9 @@ export const GET: APIRoute = async ({ site }) => {
     '',
     `> ${profile.description}`,
     '',
-    profile.tagline,
+    ...quickFacts(profile, base),
+    '',
+    `Mission, in ${profile.name.split(' ')[0]}'s words: "${profile.tagline}"`,
     '',
     '## About',
     '',
@@ -58,7 +60,7 @@ export const GET: APIRoute = async ({ site }) => {
     ...(profile.grants.length > 0 ? ['## Grants and awards', '', ...grantLines(profile), ''] : []),
     '## Research interests',
     '',
-    profile.knows_about.join(', '),
+    profile.knows_about.map(topicName).join(', '),
     '',
     '## Publications',
     '',

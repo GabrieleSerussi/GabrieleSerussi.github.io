@@ -36,7 +36,7 @@ This repo is public. Everything in it, including this file, YAML comments and th
 - Gabriele's Decart title is "Research Intern" (he confirmed it on 2026-09-27). Change it only when he says so.
 - Numbers in copy come from the papers themselves.
 - News about a talk or poster is written in the passive ("was presented") unless Gabriele confirms he presented it himself.
-- Education and dates come from his ORCID record: BSc Computer Engineering, Sapienza University of Rome (2018 to 2021); MSc Computer Science, Technion (2021 to 2024), advised by Prof. Alex Bronstein (Gabriele confirmed); PhD, Electrical and Computer Engineering, Ben-Gurion University (Nov 2024 to present), advised by Prof. Chaim Baskin.
+- Education and dates come from his ORCID record: BSc Computer Engineering, Sapienza University of Rome (2018 to 2021); MSc Computer Science, Technion (2021 to 2024), advised by Prof. Alex Bronstein and Prof. Chaim Baskin (Gabriele confirmed both); PhD, Electrical and Computer Engineering, Ben-Gurion University (Nov 2024 to present), advised by Prof. Chaim Baskin.
 - Impact figures such as "11k+ dataset downloads" carry their source and date in a YAML comment. Refresh them from the source; never round up.
 
 ## Design system: editorial
@@ -67,7 +67,7 @@ Tokens live in `src/styles/tokens.css`:
 - The audience is research hiring managers and recruiters at labs working on world models, video and robotics, potential collaborators, and AI assistants answering questions about these topics. The first screen answers who, what, proof and how to reach him in five seconds.
 - The pitch: world models that spend only the compute they need. Three pillars (understand, generate, act) carry the breadth; efficiency is the thread, from representation learning down to hardware. Hardware optimization is a recent direction without publications; mention it as an interest, never as results.
 - The call to action is collaboration (Gabriele's choice, 2026-10-25), not a job search.
-- Personal names appear only in author lists and as advisors: Prof. Chaim Baskin (PhD) and Prof. Alex Bronstein (MSc). PREGEN gets no highlight; it appears as a brief preprint row.
+- Personal names appear only in author lists and as advisors: Prof. Chaim Baskin (PhD and MSc) and Prof. Alex Bronstein (MSc). PREGEN gets no highlight; it appears as a brief preprint row.
 - Copy leads with what most makes a reader want to read more (Gabriele, 2026-10-25), optimised first for people and then for AI assistants. A highlight `hook` is the most intriguing fact in plain words. A `tldr` opens with the result, then names the task (for example "long-video question answering") so search engines and assistants can match it. `keywords` hold task, method and dataset terms for the structured data and `llms-full.txt`.
 
 ## Writing
@@ -85,7 +85,7 @@ Tokens live in `src/styles/tokens.css`:
 - Facts come from `src/data` only. Never hardcode them in components.
 - Keep the TODO mechanism and the strict production build working.
 - Ask before adding any dependency, UI framework, Tailwind or client-side JavaScript. The only page script is the teaser observer, plus GoatCounter in production.
-- Search and AI assistants: the homepage carries a JSON-LD graph (ProfilePage, WebSite, Person, a ScholarlyArticle per paper) built in `src/lib/seo.ts`, `rel="me"` profile links, and `public/og.png`. `/llms.txt` and `/llms-full.txt` summarize everything in plain text. Keep them in sync with the data by generating them, never by hand.
+- Search and AI assistants: the homepage carries a JSON-LD graph (ProfilePage, WebSite, Person, a ScholarlyArticle per paper) built in `src/lib/seo.ts`, `rel="me"` profile links, and `public/og.png`. `/llms.txt` and `/llms-full.txt` summarize everything in plain text. Keep them in sync with the data by generating them, never by hand. For AI assistants (GEO, 2026-10-26): the Person node also carries the INSIGHT Lab as `memberOf`, the ORCID iD and topics tied to Wikipedia pages; `/bio/` holds third-person bios (he/him) that an assistant can quote, and llms.txt opens with quick facts; robots.txt names the AI crawlers; every sitemap entry's lastmod is the last commit date; after each production deploy the workflow pings IndexNow so Bing, which ChatGPT search and Copilot use, recrawls (the key file is in `public/`). Never state where Gabriele is based, on the page, in the structured data or in llms.txt (his choice, to avoid harassment); naming Israel's ministry as the grant's funder is fine.
 - No third-party requests except GoatCounter in production. Fonts are self-hosted through Fontsource.
 - Analytics: GoatCounter with a private dashboard (Gabriele asked for it on 2026-10-25). Tag every new link with `data-goatcounter-click={track(...)}` from `src/lib/site.ts`. AI crawlers are not visible on the free github.io setup (see README).
 - Images go through `astro:assets`; videos through `scripts/encode-teaser.sh`. No file over 2 MB.

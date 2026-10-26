@@ -72,6 +72,8 @@ const profile = defineCollection({
           org: z.string(),
           org_formal: z.string().optional(),
           url: z.string().optional(),
+          // The research group inside the organisation, e.g. "INSIGHT Lab" (structured data).
+          lab: z.string().optional(),
           kind: z.enum(['university', 'company']),
         }),
       )
@@ -79,6 +81,10 @@ const profile = defineCollection({
     logos: z.array(z.object({ file: z.string(), label: z.string(), url: z.string() })).default([]),
     alumni_of: z.union([z.string(), z.array(z.string())]).optional(),
     advisor: z.string().optional(),
+    // What you are, in the words an assistant would use: "AI researcher".
+    occupation: z.string().optional(),
+    // Third-person bios on /bio/ and in llms.txt: the text an assistant can quote as is.
+    bio: z.object({ short: z.string(), long: z.string() }).optional(),
     research: z.object({
       lede: z.string(),
       pillars: z
@@ -122,7 +128,8 @@ const profile = defineCollection({
     email: z.string().optional(),
     cv: z.string().optional(),
     links: z.record(z.string(), z.string()).default({}),
-    knows_about: z.array(z.string()).default([]),
+    // Topics, optionally with a Wikipedia page that pins down which "world model" is meant.
+    knows_about: z.array(z.union([z.string(), z.object({ name: z.string(), wikipedia: z.string().url() })])).default([]),
     site_verification: z.object({ google: z.string().optional(), bing: z.string().optional() }).default({}),
     goatcounter: z.string().default(''),
   }),
