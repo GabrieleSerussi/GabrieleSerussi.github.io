@@ -73,9 +73,14 @@ me:
     thread: >-
       Newest direction: memory for world models, deciding what a generator or a robot should keep
       when it cannot keep everything.
-    # Topics only, no questions, methods, results, venues or names (Gabriele, 2026-10-26).
-    # Sources: the #capacity-transformer-gnn, #transformer-gnn and #disaggregated-inference channels.
+    # Topics only, very general: no questions, methods, results, venues or names (Gabriele,
+    # 2026-10-26). Sources: the #closed-loop-ar-video-generation, #diffusion-distilation,
+    # #capacity-transformer-gnn, #transformer-gnn and #disaggregated-inference Slack channels.
     in_progress:
+      - title: Autoregressive video generation
+        text: Generating long videos one chunk at a time while keeping them consistent.
+      - title: Diffusion distillation
+        text: Distilling diffusion models into faster generators.
       - title: Evidence aggregation in Transformers
         text: >-
           Helping Transformers combine many pieces of evidence, the failure
