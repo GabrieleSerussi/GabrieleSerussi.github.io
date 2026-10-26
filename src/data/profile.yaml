@@ -156,7 +156,8 @@ me:
   email: serussig@post.bgu.ac.il
   # To link a CV, add "cv: /cv.pdf" here and put the PDF at public/cv.pdf.
   links:
-    scholar: https://scholar.google.com/citations?user=GJ19YUEAAAAJ
+    # hl=en: the English interface, whatever the visitor's browser language.
+    scholar: https://scholar.google.com/citations?user=GJ19YUEAAAAJ&hl=en
     github: https://github.com/GabrieleSerussi
     x: https://x.com/GSerussi
     linkedin: https://www.linkedin.com/in/gabriele-serussi
