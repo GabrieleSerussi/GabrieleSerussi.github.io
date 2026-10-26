@@ -91,6 +91,9 @@ const profile = defineCollection({
         )
         .min(1),
       thread: z.string().optional(),
+      // Unpublished projects as open questions: no results, methods, venues or names. Replace each
+      // with its paper once it is public.
+      in_progress: z.array(z.object({ title: z.string(), text: z.string() })).default([]),
     }),
     timeline: z
       .array(
@@ -100,6 +103,17 @@ const profile = defineCollection({
           when: z.string(),
           url: z.string().optional(),
           logo: z.string().optional(),
+        }),
+      )
+      .default([]),
+    // Grants and awards under the timeline, newest first. "funder" also goes to structured data.
+    grants: z
+      .array(
+        z.object({
+          title: z.string(),
+          funder: z.string(),
+          when: z.string(),
+          text: z.string(),
         }),
       )
       .default([]),

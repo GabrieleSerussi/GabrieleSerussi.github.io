@@ -68,7 +68,7 @@ const me = Object.values(profile.links).filter((v): v is string => Boolean(clean
       {hasEqualContribution(selected) && <p class="footnote">* Equal contribution.</p>}
     </section>
 
-    <Timeline entries={profile.timeline} />
+    <Timeline entries={profile.timeline} grants={profile.grants} />
     <Contact profile={profile} />
   </main>
   <Footer profile={profile} />

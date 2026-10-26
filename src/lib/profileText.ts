@@ -23,6 +23,7 @@ export function profileProse(profile: Profile, papers: Paper[], base: string): s
     stripMd(profile.credentials, base),
     profile.research.lede,
     ...pillars,
+    ...profile.research.in_progress.map((item) => `In progress: ${item.title}. ${stripMd(item.text, base)}`),
     ...(profile.research.thread ? [profile.research.thread] : []),
   ].join('\n\n');
 }
@@ -33,3 +34,7 @@ export const timelineLines = (profile: Profile): string[] =>
     const when = clean(t.when);
     return `- ${t.role}, ${t.org}${when ? ` (${when})` : ''}`;
   });
+
+/** "- Title, funder (dates). What it is and the role." lines for grants and awards. */
+export const grantLines = (profile: Profile): string[] =>
+  profile.grants.map((g) => `- ${g.title}, ${g.funder} (${g.when}). ${g.text}`);

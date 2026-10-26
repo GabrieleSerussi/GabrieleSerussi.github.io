@@ -5,6 +5,11 @@
 # submission dates, the AdaptFM workshop day (icml.cc) and the HERBench poster session
 # (cvpr.thecvf.com).
 
+# Date of the lab's announcement of the grant; Gabriele asked to leave out the number funded.
+- id: most-grant-2026
+  date: 2026-10-25
+  text: "[Our proposal](/#grants) on finding and fixing the failures of generative AI, which I co-wrote with Prof. Chaim Baskin, won a research grant from Israel's Ministry of Innovation, Science and Technology in a competitive national call."
+
 - id: wacv-2027-himu
   date: 2026-10-14
   text: "[HiMu](/research/himu/), a training-free frame selector for long videos, was accepted at WACV 2027."
@@ -13,9 +18,10 @@
   date: 2026-10-08
   text: "[VEDJE](/research/vedje/), a cached reranker for scalable video-text retrieval, was posted to arXiv."
 
-- id: icml-2026-vedje
+# SDB main-conference poster Wed 8 July, VEDJE at AdaptFM Sat 11 July (icml.cc, KST).
+- id: icml-2026
   date: 2026-07-11
-  text: "[VEDJE](https://openreview.net/forum?id=ZqB0Ab4juk) was presented at the ICML 2026 AdaptFM workshop in Seoul."
+  text: "Two of our papers were presented at ICML 2026 in Seoul: [Structured Diffusion Bridges](/research/sdb/) in the main conference and [VEDJE](/research/vedje/) at the AdaptFM workshop."
 
 - id: cvpr-2026-herbench
   date: 2026-06-05

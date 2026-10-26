@@ -2,7 +2,7 @@ import type { APIRoute } from 'astro';
 import { getEntry } from 'astro:content';
 import { PROFILE_LINKS, clean } from '../lib/site';
 import { getPapers, paperPath, venueLine } from '../lib/papers';
-import { profileProse, timelineLines } from '../lib/profileText';
+import { grantLines, profileProse, timelineLines } from '../lib/profileText';
 
 // A plain-text summary for AI assistants and crawlers (llmstxt.org format). It leads with the
 // facts an assistant needs to answer "who is this and what do they work on", then the proof.
@@ -39,6 +39,7 @@ export const GET: APIRoute = async ({ site }) => {
     '',
     ...timelineLines(profile),
     '',
+    ...(profile.grants.length > 0 ? ['## Grants and awards', '', ...grantLines(profile), ''] : []),
     '## Selected research',
     '',
     ...research,

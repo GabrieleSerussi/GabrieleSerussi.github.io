@@ -70,8 +70,17 @@ me:
           in world models for robots.
         papers: [ears]
     thread: >-
-      Newest direction: hardware-aware efficiency, making models fast on the chips they actually
-      run on.
+      Newest direction: memory for world models, deciding what a generator or a robot should keep
+      when it cannot keep everything.
+    # Topics only, no questions, methods, results, venues or names (Gabriele, 2026-10-26).
+    # Sources: the #capacity-transformer-gnn, #transformer-gnn and #disaggregated-inference channels.
+    in_progress:
+      - title: Evidence aggregation in Transformers
+        text: >-
+          Helping Transformers combine many pieces of evidence, the failure
+          [HERBench](/research/herbench/) exposed in Video-LLMs.
+      - title: Disaggregated inference
+        text: Serving large models efficiently across different kinds of hardware.
 
   # Experience and education, newest first. "logo" is a square mark in src/assets/logos/<logo>-mark.png;
   # without one the entry shows the organisation's initial. Dates come from ORCID.
@@ -81,6 +90,13 @@ me:
       when: 2026 to present
       url: https://decart.ai
       logo: decart
+    # November 2024 to March 2026 (Gabriele, 2026-10-26; not on ORCID). PREGEN lists "Bosch Center
+    # for AI, Israel". The mark is the armature from the logo in the bosch.com header SVG.
+    - org: Bosch Center for Artificial Intelligence
+      role: Research Intern, video retrieval and multimodal fusion of vision and radar
+      when: 2024 to 2026
+      url: https://www.bosch-ai.com/
+      logo: bosch
     - org: Ben-Gurion University of the Negev
       role: PhD, Electrical and Computer Engineering, INSIGHT Lab, advised by Prof. Chaim Baskin
       when: 2024 to present
@@ -97,6 +113,20 @@ me:
       url: https://www.uniroma1.it/en
       # The seal from the official logo in the uniroma1.it header.
       logo: sapienza
+
+  # Grants and awards, newest first, shown under the timeline. Gabriele's role in the MOST grant is
+  # his own account (2026-10-26); the funder, call, title, period and PI come from the lab's
+  # announcement. He asked to leave out the number of proposals funded.
+  grants:
+    - title: Adversarial Evaluation and Hardening of Generative AI Trustworthiness
+      funder: Ministry of Innovation, Science and Technology (Israel)
+      when: 2026 to 2029
+      text: >-
+        Research grant from Israel's Ministry of Innovation, Science and Technology, won in a
+        competitive national call with Prof. Chaim Baskin as PI, to build methods and an
+        open-source toolkit that find and fix the failures of generative models. I helped shape
+        the research plan and aims, wrote major sections of the proposal and now work on the
+        project.
 
   open_to: I'm always happy to talk about world models, efficient video models, robotics and research collaborations.
   email: serussig@post.bgu.ac.il
@@ -122,6 +152,7 @@ me:
     - Efficient deep learning
     - Representation learning
     - Hardware-aware optimization
+    - Multimodal fusion
   # Private analytics: your GoatCounter site code (the "xyz" in xyz.goatcounter.com). Only you can
   # see the dashboard. Counting runs on production builds only.
   # Ownership checks for Google Search Console and Bing Webmaster Tools (homepage meta tags).

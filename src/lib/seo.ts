@@ -37,6 +37,7 @@ export function profileGraph(profile: Profile, papers: Paper[], site: URL, image
     ...(universities.length > 0 ? { affiliation: universities.map((a) => organization(a, 'CollegeOrUniversity')) } : {}),
     ...(alumni.length > 0 ? { alumniOf: alumni.map((name) => ({ '@type': 'CollegeOrUniversity', name })) } : {}),
     ...(profile.knows_about.length > 0 ? { knowsAbout: profile.knows_about } : {}),
+    ...(profile.grants.length > 0 ? { award: profile.grants.map((g) => `${g.title}, ${g.funder} research grant (${g.when})`) } : {}),
     sameAs: Object.values(profile.links).filter((v) => clean(v)),
   };
 

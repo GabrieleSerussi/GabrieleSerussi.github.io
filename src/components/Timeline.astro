@@ -4,15 +4,18 @@ import type { CollectionEntry } from 'astro:content';
 import { clean } from '../lib/site';
 import { findMark } from '../lib/media';
 
+type Profile = CollectionEntry<'profile'>['data'];
+
 interface Props {
-  entries: CollectionEntry<'profile'>['data']['timeline'];
+  entries: Profile['timeline'];
+  grants?: Profile['grants'];
 }
 
 // Experience and education, newest first. A square mark for each organisation; without one,
-// its initial stands in.
-const { entries } = Astro.props;
+// its initial stands in. Grants and awards follow as a plain list.
+const { entries, grants = [] } = Astro.props;
 ---
-{entries.length > 0 && (
+{(entries.length > 0 || grants.length > 0) && (
   <section class="section" id="experience" aria-labelledby="experience-title">
     <div class="section-head">
       <h2 id="experience-title">Experience and education</h2>
@@ -36,5 +39,22 @@ const { entries } = Astro.props;
         );
       })}
     </ul>
+
+    {grants.length > 0 && (
+      <>
+        <h3 class="subhead" id="grants">Grants and awards</h3>
+        <ul class="timeline awards">
+          {grants.map((g) => (
+            <li>
+              <div>
+                <p class="timeline-org">{g.title}</p>
+                <p class="timeline-role">{g.text}</p>
+              </div>
+              <p class="timeline-when">{g.when}</p>
+            </li>
+          ))}
+        </ul>
+      </>
+    )}
   </section>
 )}
