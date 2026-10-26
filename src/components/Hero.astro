@@ -21,6 +21,7 @@ const initials = profile.name
 const pills = [
   { label: 'Email', href: email ? `mailto:${email}` : undefined, solid: true },
   { label: 'Google Scholar', href: clean(profile.links.scholar) },
+  { label: 'alphaXiv', href: clean(profile.links.alphaxiv) },
   { label: 'GitHub', href: clean(profile.links.github) },
   { label: 'X', href: clean(profile.links.x) },
   { label: 'LinkedIn', href: clean(profile.links.linkedin) },
