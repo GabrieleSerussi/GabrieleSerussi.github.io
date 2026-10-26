@@ -20,7 +20,8 @@ const papers = defineCollection({
     theme: z.string().optional(),
     selected: z.boolean().default(false),
     // How much room a selected paper gets: lead papers are highlight cards and full rows,
-    // standard papers are full rows with a teaser, brief papers are one row without either.
+    // standard papers are full rows with a teaser, brief papers show their short hook in place of
+    // the tldr on the homepage.
     emphasis: z.enum(['lead', 'standard', 'brief']).default('standard'),
     // One line for the highlight card: what most makes a reader want to read more.
     hook: z.string().optional(),

@@ -4,7 +4,7 @@
 # Staging builds list every remaining TODO; production builds refuse to run until they're gone.
 # Teasers are found by file name: public/media/<id>/teaser.* first, then src/assets/teasers/<id>.png.
 # emphasis: "lead" = highlight card and full row, "standard" = full row with teaser,
-# "brief" = one row without teaser or tldr on the homepage.
+# "brief" = one row with the short hook in place of the tldr on the homepage (and its teaser, if any).
 # Copy: lead with what most makes a reader want to read more, then the proof. "hook" is the
 # card line for people; "tldr" is one sentence that also names the task for search engines and
 # AI assistants; "keywords" feed the structured data. Every number comes from the paper.

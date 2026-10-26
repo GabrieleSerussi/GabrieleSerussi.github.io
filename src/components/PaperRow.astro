@@ -8,7 +8,7 @@ import { badges, formatAuthors, paperLinks, paperPath } from '../lib/papers';
 interface Props {
   paper: CollectionEntry<'papers'>;
   me: string;
-  /** Brief rows have no teaser; the badges take its place. */
+  /** Brief rows have no teaser; the badges take its place. Defaults to rows without a teaser file. */
   brief?: boolean;
   /** The one-sentence result. Brief rows on the homepage leave it out. */
   showTldr?: boolean;

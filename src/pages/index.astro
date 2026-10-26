@@ -62,7 +62,7 @@ const me = Object.values(profile.links).filter((v): v is string => Boolean(clean
       </div>
       <ul class="pubs">
         {selected.map((paper) => (
-          <li><PaperRow paper={paper} me={profile.name} brief={paper.data.emphasis === 'brief'} showTldr={paper.data.emphasis !== 'brief'} /></li>
+          <li><PaperRow paper={paper} me={profile.name} showTldr={paper.data.emphasis !== 'brief'} /></li>
         ))}
       </ul>
       {hasEqualContribution(selected) && <p class="footnote">* Equal contribution.</p>}
