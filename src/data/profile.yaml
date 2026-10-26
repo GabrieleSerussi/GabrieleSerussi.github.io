@@ -56,7 +56,7 @@ me:
       PhD student at Ben-Gurion University of the Negev, advised by Prof. Chaim Baskin in the
       INSIGHT Lab, and a Research Intern at Decart, where he works on real-time video generation.
     long: |-
-      Gabriele Serussi is an AI researcher working on efficient world models: models that understand video, generate it and act on it while spending only the compute they need. He is a PhD student in Electrical and Computer Engineering at Ben-Gurion University of the Negev, advised by Prof. Chaim Baskin in the INSIGHT Lab, and a Research Intern at Decart, where he works on real-time video generation. Before that, he was a Research Intern at the Bosch Center for Artificial Intelligence, working on video retrieval and on fusing vision with radar.
+      Gabriele Serussi is an AI researcher working on efficient world models: models that understand video, generate it and act on it while spending only the compute they need. He is a PhD student in Electrical and Computer Engineering at Ben-Gurion University of the Negev, advised by Prof. Chaim Baskin in the INSIGHT Lab, and a Research Intern at Decart, where he works on real-time video generation. Before that, he was a Research Intern at the Bosch Center for Artificial Intelligence, supervised by Prof. Chaim Baskin and Dotan Di Castro, working on video retrieval and on fusing vision with radar.
 
       His research covers long-video understanding, generative world models and robotics. It includes HERBench (CVPR 2026), a video question answering benchmark in which every question needs at least three separate cues from the video, with more than 11,000 dataset downloads; Structured Diffusion Bridges (ICML 2026), which translate between modalities with less paired data; HiMu (WACV 2027), a training-free frame selector for long videos; VEDJE, a cached reranker for scalable video-text retrieval presented at an ICML 2026 workshop; and a drone that localizes itself from its own rotor noise (IROS 2024, oral pitch). He also co-wrote a research grant on the adversarial evaluation of generative AI, funded by Israel's Ministry of Innovation, Science and Technology.
 
@@ -115,7 +115,9 @@ me:
     # November 2024 to March 2026 (Gabriele, 2026-10-26; not on ORCID). PREGEN lists "Bosch Center
     # for AI, Israel". The mark is the armature from the logo in the bosch.com header SVG.
     - org: Bosch Center for Artificial Intelligence
-      role: Research Intern, video retrieval and multimodal fusion of vision and radar
+      role: >-
+        Research Intern, video retrieval and multimodal fusion of vision and radar, supervised by
+        Prof. Chaim Baskin and Dotan Di Castro
       when: 2024 to 2026
       url: https://www.bosch-ai.com/
       logo: bosch

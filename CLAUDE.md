@@ -67,7 +67,7 @@ Tokens live in `src/styles/tokens.css`:
 - The audience is research hiring managers and recruiters at labs working on world models, video and robotics, potential collaborators, and AI assistants answering questions about these topics. The first screen answers who, what, proof and how to reach him in five seconds.
 - The pitch: world models that spend only the compute they need. Three pillars (understand, generate, act) carry the breadth; efficiency is the thread, from representation learning down to hardware. Hardware optimization is a recent direction without publications; mention it as an interest, never as results.
 - The call to action is collaboration (Gabriele's choice, 2026-10-25), not a job search.
-- Personal names appear only in author lists and as advisors: Prof. Chaim Baskin (PhD and MSc) and Prof. Alex Bronstein (MSc). PREGEN gets no highlight; it appears as a brief preprint row.
+- Personal names appear only in author lists and as advisors: Prof. Chaim Baskin (PhD and MSc) and Prof. Alex Bronstein (MSc), and as supervisors: Prof. Chaim Baskin and Dotan Di Castro (Bosch). PREGEN gets no highlight; it appears as a brief preprint row.
 - Copy leads with what most makes a reader want to read more (Gabriele, 2026-10-25), optimised first for people and then for AI assistants. A highlight `hook` is the most intriguing fact in plain words. A `tldr` opens with the result, then names the task (for example "long-video question answering") so search engines and assistants can match it. `keywords` hold task, method and dataset terms for the structured data and `llms-full.txt`.
 
 ## Writing
