@@ -9,8 +9,8 @@ me:
   # One line of credentials under the mission. Advisors are the only personal names on the site
   # outside author lists (Gabriele's choice, 2026-10-25). Education matches ORCID.
   credentials: >-
-    I'm a PhD student at [Ben-Gurion University](https://www.bgu.ac.il/en/), advised by Prof.
-    Chaim Baskin in the [INSIGHT Lab](https://insight.bgu.ac.il/), and a Research Intern at
+    I'm a PhD student at [Ben-Gurion University](https://www.bgu.ac.il/en/), advised by
+    [Prof. Chaim Baskin](https://chaimbaskin.bgu.ac.il/) in the [INSIGHT Lab](https://insight.bgu.ac.il/), and a Research Intern at
     [Decart](https://decart.ai), where I work on real-time video generation. Before my PhD, I
     earned an MSc in Computer Science at the Technion and a BSc in Computer Engineering at
     Sapienza University of Rome.
@@ -31,7 +31,8 @@ me:
       kind: company
   # Official names, for structured data only.
   # The logo row under the hero, in this order. Files in src/assets/logos/: <file>.png in colour,
-  # <file>-dark.png in white for dark mode.
+  # <file>-dark.png for dark mode. The INSIGHT and BGU dark versions are the bright logos from the
+  # INSIGHT Lab site's header (img/logo.png and img/logo-uni.png); Decart's is white.
   logos:
     - file: insight-lab
       label: INSIGHT Lab
