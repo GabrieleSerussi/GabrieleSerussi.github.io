@@ -49,13 +49,19 @@ const MD_LINK = /\[([^\]]+)\]\(([^)\s]+)\)/g;
 /** True when the text contains at least one [label](url) link. */
 export const hasMdLink = (text: string): boolean => new RegExp(MD_LINK.source).test(text);
 
-/** Escapes text and turns [label](url) into links. Nothing else is interpreted. */
+const MD_BOLD = /\*\*([^*]+)\*\*/g;
+
+/** Escapes text and turns [label](url) into links and **text** into bold. Nothing else is interpreted. */
 export const inlineMd = (text: string): string =>
-  escapeHtml(text).replace(MD_LINK, (_match, label: string, href: string) => `<a href="${href}">${label}</a>`);
+  escapeHtml(text)
+    .replace(MD_LINK, (_match, label: string, href: string) => `<a href="${href}">${label}</a>`)
+    .replace(MD_BOLD, (_match, inner: string) => `<strong>${inner}</strong>`);
 
 /** Plain-text version of inlineMd, used for llms.txt: "label (absolute url)". */
 export const stripMd = (text: string, base: string): string =>
-  text.replace(MD_LINK, (_match, label: string, href: string) => `${label} (${new URL(href, base).href})`);
+  text
+    .replace(MD_LINK, (_match, label: string, href: string) => `${label} (${new URL(href, base).href})`)
+    .replace(MD_BOLD, '$1');
 
 /** "@GSerussi" from an x.com or twitter.com profile URL. */
 export const xHandle = (url: string | undefined): string | undefined => {

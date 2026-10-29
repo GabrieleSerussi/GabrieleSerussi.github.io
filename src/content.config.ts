@@ -63,7 +63,8 @@ const profile = defineCollection({
     name: z.string(),
     site_title: z.string(),
     tagline: z.string(),
-    credentials: z.string(),
+    // The bio under the headline: short paragraphs with [links](url) and **bold**.
+    intro: z.array(z.string()).min(1),
     description: z.string().max(170),
     affiliations: z
       .array(
@@ -74,6 +75,8 @@ const profile = defineCollection({
           url: z.string().optional(),
           // The research group inside the organisation, e.g. "INSIGHT Lab" (structured data).
           lab: z.string().optional(),
+          // A square mark in src/assets/logos/<mark>-mark.png, shown next to the role under the name.
+          mark: z.string().optional(),
           kind: z.enum(['university', 'company']),
         }),
       )

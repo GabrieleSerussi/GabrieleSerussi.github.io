@@ -1,13 +1,16 @@
 ---
 import { Image, getImage } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
-import { clean, hasPublicFile, inlineMd, track } from '../lib/site';
-import { findLogo, headshot } from '../lib/media';
+import { clean, escapeHtml, hasPublicFile, inlineMd, track } from '../lib/site';
+import { findLogo, findMark, headshot } from '../lib/media';
 
 interface Props {
   profile: CollectionEntry<'profile'>['data'];
 }
 
+// The first screen, after Botao He's and Roy Amoyal's pages: a compact identity (photo, name, one
+// line per role, profile links), the mission as one large sentence, a short bio that says what the
+// research is and what it has led to, then the collaboration callout and the affiliation logos.
 const { profile } = Astro.props;
 const photo = headshot();
 const email = clean(profile.email);
@@ -28,8 +31,20 @@ const pills = [
   { label: 'CV', href: cv },
 ].filter((p): p is { label: string; href: string; solid?: boolean } => Boolean(p.href));
 
+// Hyphenated names such as "Ben-Gurion" never break across lines.
+const keepHyphens = (text: string): string =>
+  escapeHtml(text).replace(/\S*-\S*/g, (word) => `<span class="nobreak">${word}</span>`);
+
+// One line per role, each with its organisation's square mark.
+const roles = await Promise.all(
+  profile.affiliations.map(async (a) => {
+    const mark = a.mark ? findMark(a.mark) : undefined;
+    return { text: `${a.role}, ${a.org}`, url: clean(a.url), mark: mark ? await getImage({ src: mark, width: 40 }) : undefined };
+  }),
+);
+
 // Logos in the order of profile.yaml, each with its own link. They are drawn for a light page;
-// dark mode swaps in the white versions.
+// dark mode swaps in the bright versions.
 const logos = await Promise.all(
   profile.logos.map(async (logo) => {
     const { light, dark } = findLogo(logo.file);
@@ -41,38 +56,56 @@ const logos = await Promise.all(
 const shown = logos.filter((l) => l !== undefined);
 ---
 <header class="hero">
-  {photo ? (
-    <div class="photo">
-      <Image src={photo} alt={`Portrait of ${profile.name}`} widths={[240, 400]} sizes="(min-width: 48rem) 12.5rem, 7.5rem" loading="eager" fetchpriority="high" />
-    </div>
-  ) : (
-    <div class="photo" aria-hidden="true">{initials}</div>
-  )}
-  <div>
-    <h1 class="name">{profile.name}</h1>
-    <p class="mission">{profile.tagline}</p>
-    <p class="credentials" set:html={inlineMd(profile.credentials)}></p>
-    {pills.length > 0 && (
-      <ul class="pills" aria-label="Contact and profiles">
-        {pills.map((p) => (
-          <li><a class:list={['pill', { 'pill--solid': p.solid }]} href={p.href} data-goatcounter-click={track('hero', p.label)}>{p.label}</a></li>
-        ))}
-      </ul>
+  <div class="hero-id">
+    {photo ? (
+      <div class="photo">
+        <Image src={photo} alt={`Portrait of ${profile.name}`} widths={[240, 400]} sizes="(min-width: 48rem) 9rem, 7.5rem" loading="eager" fetchpriority="high" />
+      </div>
+    ) : (
+      <div class="photo" aria-hidden="true">{initials}</div>
     )}
-    {profile.open_to && <p class="callout">{profile.open_to}</p>}
-    {shown.length > 0 && (
-      <ul class="logos" aria-label="Affiliations">
-        {shown.map((l) => (
+    <div>
+      <h1 class="name">{profile.name}</h1>
+      <ul class="roles" aria-label="Current positions">
+        {roles.map((r) => (
           <li>
-            <a href={l.url} aria-label={l.org} data-goatcounter-click={track('logo', l.name)}>
-              <picture>
-                <source media="(prefers-color-scheme: dark)" srcset={l.dark.src} />
-                <img src={l.light.src} alt="" data-logo={l.name} width={l.light.attributes.width} height={l.light.attributes.height} />
-              </picture>
-            </a>
+            {r.mark && <img src={r.mark.src} alt="" width="20" height="20" />}
+            {r.url ? <a href={r.url} data-goatcounter-click={track('hero-role', r.text)} set:html={keepHyphens(r.text)}></a> : <span set:html={keepHyphens(r.text)}></span>}
           </li>
         ))}
       </ul>
-    )}
+      {pills.length > 0 && (
+        <ul class="pills" aria-label="Contact and profiles">
+          {pills.map((p) => (
+            <li><a class:list={['pill', { 'pill--solid': p.solid }]} href={p.href} data-goatcounter-click={track('hero', p.label)}>{p.label}</a></li>
+          ))}
+        </ul>
+      )}
+    </div>
   </div>
+
+  <p class="mission">{profile.tagline}</p>
+  <div class="intro">
+    {profile.intro.map((p) => <p set:html={inlineMd(p)}></p>)}
+  </div>
+
+  {(profile.open_to || shown.length > 0) && (
+    <div class="hero-foot">
+      {profile.open_to && <p class="callout">{profile.open_to}</p>}
+      {shown.length > 0 && (
+        <ul class="logos" aria-label="Affiliations">
+          {shown.map((l) => (
+            <li>
+              <a href={l.url} aria-label={l.org} data-goatcounter-click={track('logo', l.name)}>
+                <picture>
+                  <source media="(prefers-color-scheme: dark)" srcset={l.dark.src} />
+                  <img src={l.light.src} alt="" data-logo={l.name} width={l.light.attributes.width} height={l.light.attributes.height} />
+                </picture>
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )}
 </header>

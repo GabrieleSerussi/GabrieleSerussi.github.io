@@ -28,7 +28,7 @@ The first command also writes `package-lock.json`. Commit it: the deploy action 
 
 | File | What it controls |
 |---|---|
-| `src/data/profile.yaml` | Name, mission line, credentials, affiliations, research pillars, experience and education, links, email |
+| `src/data/profile.yaml` | Name, mission line, intro (the bio under it), affiliations, research pillars, experience and education, links, email |
 | `src/data/papers.yaml` | Every paper; `selected: true` puts it on the homepage, in file order. `emphasis: lead` papers are also highlight cards (they need a `hook` and a teaser), `standard` papers are full rows with a teaser, `brief` papers are one row. `keywords` feed search engines and AI assistants. `proof` adds an impact badge |
 | `src/data/news.yaml` | Dated news; items older than 180 days disappear on their own |
 

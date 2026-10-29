@@ -4,16 +4,28 @@ me:
   name: Gabriele Serussi
   # The <title> of the homepage and the first line of link previews. Keep it under 60 characters.
   site_title: Gabriele Serussi | World models and video AI researcher
-  # The mission line under your name.
+  # The mission: one short sentence, set large under the name, roles and links.
   tagline: I build world models that spend only the compute they need.
-  # One line of credentials under the mission. Advisors are the only personal names on the site
-  # outside author lists (Gabriele's choice, 2026-10-25). Education matches ORCID.
-  credentials: >-
-    I'm a PhD student at [Ben-Gurion University](https://www.bgu.ac.il/en/), advised by
-    [Prof. Chaim Baskin](https://chaimbaskin.bgu.ac.il/) in the [INSIGHT Lab](https://insight.bgu.ac.il/), and a Research Intern at
-    [Decart](https://decart.ai), where I work on real-time video generation. Before my PhD, I
-    earned an MSc in Computer Science at the Technion and a BSc in Computer Engineering at
-    Sapienza University of Rome.
+  # The bio under the headline, modelled on Roy Amoyal's (Gabriele's choice, 2026-10-29): who and
+  # where, the research area with its subtopics, then one research thread and what it led to.
+  # [label](url) makes a link and **text** is bold. Advisors are the only personal names on the
+  # site outside author lists. No location (his choice).
+  intro:
+    - >-
+      I'm a PhD student at [Ben-Gurion University](https://www.bgu.ac.il/en/) under the
+      supervision of [Prof. Chaim Baskin](https://chaimbaskin.bgu.ac.il/) in the
+      [INSIGHT Lab](https://insight.bgu.ac.il/), and a Research Intern at
+      [Decart](https://decart.ai), where I work on real-time video generation.
+    - >-
+      My research is in **efficient world models**: long-video understanding, real-time video
+      generation, video retrieval and robotics. I was previously a Research Intern at the
+      [Bosch Center for AI](https://www.bosch-ai.com/), and I hold an MSc in Computer Science
+      from the Technion and a BSc in Computer Engineering from Sapienza University of Rome.
+    - >-
+      In my PhD, I've been studying what a model needs to see and remember to understand a long
+      video, and how to keep only that. This line of work has led to papers at **CVPR 2026** and
+      **WACV 2027**, and our benchmark HERBench has passed **11,000 downloads**. I've also
+      published at **ICML 2026** and **IROS 2024**.
   # Search results and link previews show this. Keep it under 160 characters.
   description: >-
     Gabriele Serussi is an AI researcher working on efficient world models and video AI, at
@@ -24,10 +36,12 @@ me:
       org_formal: Ben-Gurion University of the Negev
       url: https://insight.bgu.ac.il/
       lab: INSIGHT Lab
+      mark: bgu
       kind: university
     - role: Research Intern
       org: Decart
       url: https://decart.ai
+      mark: decart
       kind: company
   # Official names, for structured data only.
   # The logo row under the hero, in this order. Files in src/assets/logos/: <file>.png in colour,

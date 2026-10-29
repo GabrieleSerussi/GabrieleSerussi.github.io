@@ -20,7 +20,7 @@ export function profileProse(profile: Profile, papers: Paper[], base: string): s
     return `${pillar.title}. ${pillar.text}${backing}`;
   });
   return [
-    profile.bio?.long ?? stripMd(profile.credentials, base),
+    profile.bio?.long ?? profile.intro.map((p) => stripMd(p, base)).join(' '),
     profile.research.lede,
     ...pillars,
     ...profile.research.in_progress.map((item) => `In progress: ${item.title}. ${stripMd(item.text, base)}`),

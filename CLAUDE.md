@@ -19,7 +19,7 @@ This repo is public. Everything in it, including this file, YAML comments and th
 
 ## How it fits together
 
-- All content lives in `src/data/`: `profile.yaml` (identity, credentials, research pillars, timeline, links), `papers.yaml` (papers with `selected: true` appear on the homepage in file order), `news.yaml` (items expire after 180 days).
+- All content lives in `src/data/`: `profile.yaml` (identity, intro, research pillars, timeline, links), `papers.yaml` (papers with `selected: true` appear on the homepage in file order), `news.yaml` (items expire after 180 days).
 - `src/content.config.ts` checks the shape of the data. `src/lib/validate.ts` checks accuracy: strings containing TODO, highlighted papers missing a hook or teaser, research pillars naming unknown papers, author lists without Gabriele's name, missing logos, headshot and CV.
 - `SITE_STAGE` is a repository variable, `staging` by default. Staging means noindex, the issues panel and no analytics. Production means the build fails on any issue. Launch flips the variable; no code change.
 - Media locations and naming are in README.md.
@@ -44,7 +44,7 @@ This repo is public. Everything in it, including this file, YAML comments and th
 A white page where the work carries the colour. The mission line, "I build world models that spend only the compute they need.", is fixed; change it only if Gabriele asks.
 
 What the seven reference sites taught, and this site follows:
-- Identity and credentials in the first lines: photo, name, mission, institution, advisor, company, degrees, profile links. Advisors and institutions are the strongest trust signals in academia.
+- Identity in the first lines: photo, name, one line per role with its mark, profile links; then the mission as one large sentence and a short bio modelled on Roy Amoyal's (who and where; the research area with its subtopics; one research thread and the venues and numbers it led to, in bold). Advisors and institutions are the strongest trust signals in academia.
 - Show the work as moving pictures before text (Yanjie Ze's highlights grid): every highlight has a teaser, a venue badge, a short name and one result with its baseline.
 - A research vision that ties the papers together (Jiankai Sun's pillars): each pillar names the papers that back it.
 - Status badges for venues and recognition (oral pitch, downloads), and one explicit call to action in a callout (Botao He).
@@ -54,7 +54,7 @@ What the seven reference sites taught, and this site follows:
 Tokens live in `src/styles/tokens.css`:
 - Colors: page `#FFFFFF`, surface `#F6F6F4`, lines `#EBEBEB` and `#D4D4D4`, ink `#141414`, muted `#5A5A5A`, accent vermilion `#B23A12`, with a dark palette under `prefers-color-scheme: dark` (accent `#FF8F66`, dark text on accent fills). Every text pair is at least 4.5:1; the comments give the ratios.
 - Type: Newsreader Variable (serif, with italic) for the name, mission, headings and paper titles; Mona Sans Variable for everything else. Both are self-hosted through Fontsource. Gabriele approved the Newsreader dependency on 2026-10-25.
-- Layout: a 68rem container. Order: nav, hero (round photo left; name, italic mission, credentials, profile pills, callout, colour logos right), Highlights (four cards), Research (lede, three pillars with paper chips, one thread line), News, Selected publications (all selected papers in file order; PREGEN as a brief row with badges instead of a teaser), Experience and education, Get in touch, footer.
+- Layout: a 68rem container. Order: nav, hero (identity row: round photo, name, role lines, profile pills; the mission as a large serif sentence; the three-paragraph intro; callout and logos side by side), Highlights (four cards), Research (lede, three pillars with paper chips, one thread line), News, Selected publications (all selected papers in file order; PREGEN as a brief row with badges instead of a teaser), Experience and education, Get in touch, footer.
 - Paper order follows `papers.yaml`, which is Gabriele's priority order: HERBench, Structured Diffusion Bridges, HiMu, the IROS paper, VEDJE, PREGEN.
 - `emphasis` sets the room a paper gets: `lead` papers are highlight cards and full rows (HERBench, SDB, HiMu, IROS), `standard` papers are full rows with a teaser (VEDJE), `brief` papers are one row without teaser or tldr on the homepage (PREGEN).
 - Every paper in `papers.yaml` gets its own page at `/research/<id>/` (`src/pages/research/[id].astro`): badges, title, authors, the hook as lead, link buttons, the teaser, the key result, the published abstract, BibTeX, topics and related papers from the same research pillar. Homepage titles, highlight cards, research chips and news link there. Each page carries Google Scholar citation tags, a ScholarlyArticle graph with the abstract, and the teaser as its preview image. The `abstract` field is the published text verbatim (only LaTeX markup removed), so the style rules do not apply to it.

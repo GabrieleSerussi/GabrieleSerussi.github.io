@@ -192,18 +192,21 @@ a:hover {
   color: var(--accent-ink);
 }
 
-/* Hero */
+/* Hero: identity row, the mission as one large sentence, the bio, then callout and logos */
 .hero {
-  display: grid;
-  gap: 1.75rem;
   padding-top: clamp(2rem, 1rem + 3vw, 3.25rem);
 }
 
+.hero-id {
+  display: grid;
+  gap: 1.25rem;
+}
+
 @media (min-width: 48rem) {
-  .hero {
-    grid-template-columns: 12.5rem minmax(0, 1fr);
-    align-items: start;
-    gap: 2.75rem;
+  .hero-id {
+    grid-template-columns: 9rem minmax(0, 1fr);
+    align-items: center;
+    gap: 2.25rem;
   }
 }
 
@@ -218,7 +221,7 @@ a:hover {
 
 @media (min-width: 48rem) {
   .photo {
-    width: 12.5rem;
+    width: 9rem;
   }
 }
 
@@ -236,33 +239,86 @@ a:hover {
   letter-spacing: -0.025em;
 }
 
+.roles {
+  display: grid;
+  gap: 0.3rem;
+  margin: 0.75rem 0 0;
+  padding: 0;
+  list-style: none;
+  color: var(--ink-muted);
+}
+
+.roles li {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.roles img {
+  flex: none;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 4px;
+  background: var(--tile);
+}
+
+.roles a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.nobreak {
+  white-space: nowrap;
+}
+
+.roles a:hover {
+  color: var(--ink);
+  text-decoration: underline;
+}
+
+.hero .pills {
+  margin-top: 1.1rem;
+}
+
 .mission {
-  margin-top: 0.7rem;
+  margin-top: clamp(1.75rem, 1.25rem + 1.5vw, 2.5rem);
   max-width: 30ch;
   font-family: var(--display);
   font-size: var(--fs-mission);
-  font-style: italic;
   font-weight: 400;
-  line-height: 1.25;
+  line-height: 1.18;
+  letter-spacing: -0.01em;
 }
 
-.credentials {
-  margin-top: 1rem;
-  max-width: 64ch;
+.intro {
+  margin-top: 1.25rem;
+  max-width: 70ch;
   color: var(--ink-muted);
   font-size: 1.03rem;
 }
 
-.credentials a {
+.intro p + p {
+  margin-top: 0.75rem;
+}
+
+.intro a,
+.intro strong {
   color: var(--ink);
 }
 
-.hero .pills {
-  margin-top: 1.25rem;
+.intro strong {
+  font-weight: 650;
+}
+
+.hero-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.25rem 2.25rem;
+  margin-top: 1.5rem;
 }
 
 .callout {
-  margin-top: 1.4rem;
   max-width: 64ch;
   padding: 0.75rem 1rem;
   border-left: 3px solid var(--accent);
@@ -276,7 +332,6 @@ a:hover {
   flex-wrap: wrap;
   align-items: center;
   gap: 1rem 1.75rem;
-  margin-top: 1.5rem;
 }
 
 .logos a {
